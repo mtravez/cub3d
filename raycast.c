@@ -22,6 +22,7 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash, t_map3d *map3d)
 	float	aTan;
 	float	nTan;
 	int32_t	color;
+	int		size;
 
 	color = PINK;
 	ray.ra = player.pa - DR * 30;
@@ -30,6 +31,7 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash, t_map3d *map3d)
 	if (ray.ra > 2 * PI)
 		ray.ra -= 2 * PI;
 	ray.r = 0;
+	size = 0;
 	while (ray.r < RAYNR)
 	{
 		//---HORIZONTAL WALLS---
@@ -151,4 +153,5 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash, t_map3d *map3d)
 		ray.r++;
 	}
 }
+
 

@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:21:07 by mtravez           #+#    #+#             */
-/*   Updated: 2023/08/27 18:00:09 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/08/27 19:10:25 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,9 +203,26 @@ void buttons(mlx_key_data_t key, void *param)
 	
 // }
 
+void	paint_horizon(int32_t color_c, int32_t color_f, void *mlx)
+{
+	mlx_image_t *ceiling;
+	mlx_image_t *floor;
+
+	ceiling = mlx_new_image(mlx, WIN_W / 3, (int32_t)(WIN_H / 2));
+	floor = mlx_new_image(mlx, WIN_W / 3, (int32_t)(WIN_H / 2));
+	paint_image(ceiling, color_c);
+	paint_image(floor, color_f);
+	mlx_image_to_window(mlx, ceiling, 0, 0);
+	mlx_image_to_window(mlx, floor, 0, WIN_H / 2);
+	mlx_image_to_window(mlx, ceiling, WIN_W / 3, 0);
+	mlx_image_to_window(mlx, floor, WIN_W / 3, WIN_H / 2);
+	mlx_image_to_window(mlx, ceiling, (WIN_W / 3) * 2, 0);
+	mlx_image_to_window(mlx, floor, (WIN_W / 3) * 2, WIN_H / 2);
+}
+
 int main()
 {
-	void		*mlx;
+	mlx_t		*mlx;
 	t_player	player;
 	t_map3d		map3d;
 
@@ -219,10 +236,11 @@ int main()
 	player.mlx = mlx;
 	crash = mlx_new_image(mlx, 10, 10);
 	// paint_image(crash, 0xFF0000FF);
-	draw_map_2d(mlx);
+	// draw_map_2d(mlx);
 	// draw_player(mlx, &player);
 	// for (int i = 0; i < RAYNR; i++)
 	// 	mlx_image_to_window(mlx, crash, i, 0);
+	paint_horizon(0xC4FFF3FF, 0x065715FF, mlx);
 	draw_rays_3d(player, crash, player.map3d);
 	mlx_key_hook(mlx, &buttons, &player);
 	mlx_loop(mlx);
