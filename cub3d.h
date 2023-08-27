@@ -5,16 +5,20 @@
 # define BPP sizeof(int32_t)
 # define MAPY 8
 # define MAPX 8
+# define MAPSIZE 10
 # define MAPS 64
 # define PINK 0xFAA0EFFF
 # define SHADOW 0xB876B0FF
-# define GROUND 0x000000FF
-# define WALL 0xAFFAA0FF
+# define GROUND 0x0000004B
+# define WALL 0xAFFAA04B
 # define PI 3.14159265359
 # define PI2 PI / 2
 # define PI3 3 * PI / 2
 # define DR 0.0174533
 # define RAYNR 60
+# define WIN_H 500
+# define WIN_W 750
+
 
 typedef struct s_data
 {
@@ -22,6 +26,14 @@ typedef struct s_data
 	int height;
 	int width;
 }	t_data;
+
+typedef enum e_direction
+{
+	EAST,
+	SOUTH,
+	WEST,
+	NORTH
+}	t_direction;
 
 typedef struct s_map3d
 {

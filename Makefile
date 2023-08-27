@@ -1,7 +1,7 @@
 NAME = cub3d
 SRC = cub3d.c raycast.c
 
-CFLAGS      = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS      = -Wall -Wextra -Werror
 
 SAN_LDFLAGS = -L../LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ../LeakSanitize
 OBJ_DIR = obj

@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:21:07 by mtravez           #+#    #+#             */
-/*   Updated: 2023/08/26 20:12:51 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/08/27 18:00:09 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,10 @@ void	draw_map_2d(void *mlx)
 {
 	int x, y, x0, y0;
 	
-	mlx_image_t *square1 = mlx_new_image(mlx, MAPS, MAPS);
+	mlx_image_t *square1 = mlx_new_image(mlx, MAPSIZE, MAPSIZE);
 	paint_image(square1, WALL);
 	
-	mlx_image_t *square2 = mlx_new_image(mlx, MAPS, MAPS);
+	mlx_image_t *square2 = mlx_new_image(mlx, MAPSIZE, MAPSIZE);
 	paint_image(square2, GROUND);
 	
 	mlx_image_t **to_draw = &square1;
@@ -110,8 +110,8 @@ void	draw_map_2d(void *mlx)
 				to_draw = &square1;
 			else
 				to_draw = &square2;
-			x0 = x * MAPS;
-			y0 = y * MAPS;
+			x0 = x * MAPSIZE;
+			y0 = y * MAPSIZE;
 			mlx_image_to_window(mlx, *to_draw, x0 + x, y0 + y);
 		}
 	}
@@ -189,10 +189,10 @@ void buttons(mlx_key_data_t key, void *param)
 		if (map[ipy_sub_yo][ipx] == '0')
 			player->py -= sin(player->pa + (PI / 2)) * 5;
 	}
-	player->img->instances[0].x = player->px;
-	player->img->instances[0].y = player->py;
-	player->dir->instances[0].x = player->px + player->pdx * 5;
-	player->dir->instances[0].y = player->py + player->pdy * 5;
+	// player->img->instances[0].x = player->px;
+	// player->img->instances[0].y = player->py;
+	// player->dir->instances[0].x = player->px + player->pdx * 5;
+	// player->dir->instances[0].y = player->py + player->pdy * 5;
 	draw_rays_3d(*player, crash, player->map3d);
 }
 
@@ -209,21 +209,29 @@ int main()
 	t_player	player;
 	t_map3d		map3d;
 
-	mlx = mlx_init(1024, 512, "Game", true);
+	mlx = mlx_init(WIN_W, WIN_H, "Game", true);
 	player.px = 300;
 	player.py = 300;
-	player.pa = 0;
+	player.pa = PI3;
 	player.pdx = cos(player.pa) * 5;
 	player.pdy = sin(player.pa) * 5;
 	player.map3d = &map3d;
 	player.mlx = mlx;
 	crash = mlx_new_image(mlx, 10, 10);
-	paint_image(crash, 0xFF0000FF);
+	// paint_image(crash, 0xFF0000FF);
 	draw_map_2d(mlx);
-	draw_player(mlx, &player);
-	for (int i = 0; i < RAYNR; i++)
-		mlx_image_to_window(mlx, crash, i, 0);
+	// draw_player(mlx, &player);
+	// for (int i = 0; i < RAYNR; i++)
+	// 	mlx_image_to_window(mlx, crash, i, 0);
 	draw_rays_3d(player, crash, player.map3d);
 	mlx_key_hook(mlx, &buttons, &player);
 	mlx_loop(mlx);
+	mlx_delete_image(mlx, crash);
+	for (int i = 0; i < RAYNR; i++)
+	{
+		mlx_delete_image(mlx, map3d.map_3d[i]);
+	}
+	mlx_terminate(mlx);
+	// system("leaks cub3d");
+	return (0);
 }

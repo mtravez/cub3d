@@ -123,13 +123,14 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash, t_map3d *map3d)
 			ray.dist = ray.disV;
 			color = PINK;
 		}
-		crash->instances[ray.r].x = ray.rx;
-		crash->instances[ray.r].y = ray.ry;
 		ray.ra += DR;
 		if (ray.ra < 0)
 			ray.ra += 2 * PI;
 		if (ray.ra > 2 * PI)
 			ray.ra -= 2 * PI;
+		// crash->instances[ray.r].x = ray.rx;
+		// crash->instances[ray.r].y = ray.ry;
+		paint_image(crash, 0xFF0000FF);
 		
 		//---DRAW 3D WALLS---
 		float ca = player.pa - ray.ra;
@@ -138,15 +139,15 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash, t_map3d *map3d)
 		if (ca > 2 * PI)
 			ca -= 2 * PI;
 		ray.dist *= cos(ca);
-		float lineH = (MAPS * 420) / ray.dist;
-		if (lineH > 420)
-			lineH = 420;
-		float lineO = 250 - lineH / 2;
+		float lineH = (MAPS * WIN_H) / ray.dist;
+		if (lineH > WIN_H)
+			lineH = WIN_H;
+		float lineO = (WIN_H / 2) - lineH / 2;
 		if (map3d->map_3d[ray.r])
 			mlx_delete_image(player.mlx, map3d->map_3d[ray.r]);
-		map3d->map_3d[ray.r] = mlx_new_image(player.mlx, 8, lineH * 8);
+		map3d->map_3d[ray.r] = mlx_new_image(player.mlx, WIN_W / 57, lineH * (WIN_W / 57));
 		paint_image(map3d->map_3d[ray.r], color);
-		mlx_image_to_window(player.mlx, map3d->map_3d[ray.r], (ray.r * 8 + 530) - ray.r, lineO);
+		mlx_image_to_window(player.mlx, map3d->map_3d[ray.r], (ray.r * WIN_W * 0.018) - ray.r, lineO);
 		ray.r++;
 	}
 }
