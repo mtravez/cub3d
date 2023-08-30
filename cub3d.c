@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:21:07 by mtravez           #+#    #+#             */
-/*   Updated: 2023/08/27 19:10:25 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/08/30 16:34:46 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,24 +59,24 @@ void paint_image(mlx_image_t *img, int32_t color)
 		j = 0;
 		while (j < img->width)
 		{
-			mlx_put_pixel(img, i, j, color);
+			mlx_put_pixel(img, j, i, color);
 			j++;
 		}
 		i++;
 	}
 }
 
-void	delete_map(mlx_t *mlx, t_map3d *map3d)
-{
-	int	i;
+// void	delete_map(mlx_t *mlx, t_map3d *map3d)
+// {
+// 	int	i;
 
-	i = 0;
-	while (i < RAYNR)
-	{
-		mlx_delete_image(mlx, map3d->map_3d[i]);
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < RAYNR)
+// 	{
+// 		mlx_delete_image(mlx, map3d->map_3d[i]);
+// 		i++;
+// 	}
+// }
 
 void	draw_player(void *mlx, t_player *player)
 {
@@ -193,31 +193,32 @@ void buttons(mlx_key_data_t key, void *param)
 	// player->img->instances[0].y = player->py;
 	// player->dir->instances[0].x = player->px + player->pdx * 5;
 	// player->dir->instances[0].y = player->py + player->pdy * 5;
-	draw_rays_3d(*player, crash, player->map3d);
+	draw_rays_3d(*player, crash);
 }
 
-// void	display(void *player)
-// {
-// 	t_player *player = player;
-
-	
-// }
+void	paint_text(t_player player)
+{
+	mlx_texture_t *t = player.textures[3];
+	mlx_image_t *img = mlx_new_image(player.mlx, t->width, t->height);
+	for (u_int32_t i = 0; i < t->height; i++)
+	{
+		for (u_int32_t j = 0; j < t->width; j++)
+			mlx_put_pixel(img, j, i, t->pixels[(i * t->width + j) * BPP]);
+	}
+	mlx_image_to_window(player.mlx, img, 0, 0);
+}
 
 void	paint_horizon(int32_t color_c, int32_t color_f, void *mlx)
 {
 	mlx_image_t *ceiling;
 	mlx_image_t *floor;
 
-	ceiling = mlx_new_image(mlx, WIN_W / 3, (int32_t)(WIN_H / 2));
-	floor = mlx_new_image(mlx, WIN_W / 3, (int32_t)(WIN_H / 2));
+	ceiling = mlx_new_image(mlx, WIN_W, (int32_t)(WIN_H / 2));
+	floor = mlx_new_image(mlx, WIN_W, (int32_t)(WIN_H / 2));
 	paint_image(ceiling, color_c);
 	paint_image(floor, color_f);
 	mlx_image_to_window(mlx, ceiling, 0, 0);
 	mlx_image_to_window(mlx, floor, 0, WIN_H / 2);
-	mlx_image_to_window(mlx, ceiling, WIN_W / 3, 0);
-	mlx_image_to_window(mlx, floor, WIN_W / 3, WIN_H / 2);
-	mlx_image_to_window(mlx, ceiling, (WIN_W / 3) * 2, 0);
-	mlx_image_to_window(mlx, floor, (WIN_W / 3) * 2, WIN_H / 2);
 }
 
 int main()
@@ -229,26 +230,38 @@ int main()
 	mlx = mlx_init(WIN_W, WIN_H, "Game", true);
 	player.px = 300;
 	player.py = 300;
-	player.pa = PI3;
+	player.pa = PI;
 	player.pdx = cos(player.pa) * 5;
 	player.pdy = sin(player.pa) * 5;
 	player.map3d = &map3d;
+	map3d.buffer = ft_calloc(WIN_H, sizeof(uint32_t *));
+	for (int i = 0; i < WIN_H; i++)
+	{
+		map3d.buffer[i] = ft_calloc(WIN_W, sizeof(uint32_t));
+	}
 	player.mlx = mlx;
+	player.img = mlx_new_image(mlx, WIN_W, WIN_H);
+	player.textures[0] = mlx_load_png("pics/redbrick.png");
+	player.textures[1] = mlx_load_png("pics/greystone.png");
+	player.textures[2] = mlx_load_png("pics/mossy.png");
+	player.textures[3] = mlx_load_png("pics/eagle.png");
 	crash = mlx_new_image(mlx, 10, 10);
-	// paint_image(crash, 0xFF0000FF);
 	// draw_map_2d(mlx);
 	// draw_player(mlx, &player);
 	// for (int i = 0; i < RAYNR; i++)
 	// 	mlx_image_to_window(mlx, crash, i, 0);
 	paint_horizon(0xC4FFF3FF, 0x065715FF, mlx);
-	draw_rays_3d(player, crash, player.map3d);
+	// paint_text(player);
+	// paint_image(player.img, 0xFF0000FF);
+	mlx_image_to_window(mlx, player.img, 0, 0);
+	draw_rays_3d(player, crash);
 	mlx_key_hook(mlx, &buttons, &player);
 	mlx_loop(mlx);
 	mlx_delete_image(mlx, crash);
-	for (int i = 0; i < RAYNR; i++)
-	{
-		mlx_delete_image(mlx, map3d.map_3d[i]);
-	}
+	// for (int i = 0; i < RAYNR; i++)
+	// {
+	// 	mlx_delete_image(mlx, map3d.map_3d[i]);
+	// }
 	mlx_terminate(mlx);
 	// system("leaks cub3d");
 	return (0);
