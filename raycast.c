@@ -247,28 +247,28 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 		}
 		if (ray.disH < ray.disV)
 		{
-			if (ray.ry < 0)
-				ray.wall = SOUTH;
-			else
-				ray.wall = NORTH;
 			ray.rx = ray.hx;
 			ray.ry = ray.hy;
 			ray.dist = ray.disH;
 			color = SHADOW;
-			ray.shade = 0.5;
+			ray.shade = 0.8;
+			if (ray.yo < 0)
+				ray.wall = SOUTH;
+			else
+				ray.wall = NORTH;
 			// if (ray.ra > 0 && ray.ra < PI2)
 		}
 		else
 		{
-			if (ray.rx < 0)
-				ray.wall = WEST;
-			else
-				ray.wall = EAST;
 			ray.rx = ray.vx;
 			ray.ry = ray.vy;
 			ray.dist = ray.disV;
 			color = PINK;
 			ray.shade = 1;
+			if (ray.xo < 0)
+				ray.wall = WEST;
+			else
+				ray.wall = EAST;
 			// if (ray.ra > PI)
 		}
 		ray.ra += DR / 2;
@@ -287,7 +287,7 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 		if (ca > 2 * PI)
 			ca -= 2 * PI;
 		ray.dist *= cos(ca);
-		ray.wall = EAST;
+		// ray.wall = EAST;
 		draw_texture(ray, player, color);
 		// break;
 		ray.r++;

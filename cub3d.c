@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:21:07 by mtravez           #+#    #+#             */
-/*   Updated: 2023/08/30 16:34:46 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/08/30 16:38:32 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ int main()
 	t_player	player;
 	t_map3d		map3d;
 
-	mlx = mlx_init(WIN_W, WIN_H, "Game", true);
+	mlx = mlx_init(WIN_W, WIN_H, "Game", false);
 	player.px = 300;
 	player.py = 300;
 	player.pa = PI;
