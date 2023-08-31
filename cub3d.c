@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:21:07 by mtravez           #+#    #+#             */
-/*   Updated: 2023/08/31 16:02:52 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/08/31 17:16:24 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ int main()
 	t_player	player;
 	t_map3d		map3d;
 
-	mlx = mlx_init(WIN_W, WIN_H, "Game", false);
+	mlx = mlx_init(WIN_W, WIN_H, "Game", true);
 	player.px = 300;
 	player.py = 300;
 	player.pa = PI;
@@ -241,7 +241,7 @@ int main()
 	}
 	player.mlx = mlx;
 	player.img = mlx_new_image(mlx, WIN_W, WIN_H);
-	player.textures[0] = mlx_load_png("pics/purplestone.png");
+	player.textures[0] = mlx_load_png("pics/bluestone.png");
 	player.textures[1] = mlx_load_png("pics/greystone.png");
 	player.textures[2] = mlx_load_png("pics/mossy.png");
 	player.textures[3] = mlx_load_png("pics/colorstone.png");

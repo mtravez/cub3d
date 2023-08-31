@@ -52,34 +52,34 @@ void	paint_buffer(t_player player)
 	}
 }
 
-// uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y)
-// {
-// 	uint32_t	color;
-
-// 	color = t->pixels[t->height * y * BPP + x * BPP] << 24 | \
-// 	t->pixels[t->height * y * BPP + x * BPP + 1] << 16 | \
-// 	t->pixels[t->height * y * BPP + x * BPP + 2] << 8 | \
-// 	t->pixels[t->height * y * BPP + x * BPP + 3];
-// 	// color = t->pixels[t->height * y + x * BPP] << 24;
-// 	// color += t->pixels[t->height * y + x * BPP + 1] << 16;
-// 	// printf("%X\n", color);
-// 	return (color);
-// }
-
-uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y, float shade)
+uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y)
 {
 	uint32_t	color;
 
-	color = (int)(t->pixels[t->height * y * BPP + x * BPP] * shade) << 24 | \
-	(int)(t->pixels[t->height * y * BPP + x * BPP + 1] * shade) << 16 | \
-	(int)(t->pixels[t->height * y * BPP + x * BPP + 2] * shade) << 8 | \
+	color = t->pixels[t->height * y * BPP + x * BPP] << 24 | \
+	t->pixels[t->height * y * BPP + x * BPP + 1] << 16 | \
+	t->pixels[t->height * y * BPP + x * BPP + 2] << 8 | \
 	t->pixels[t->height * y * BPP + x * BPP + 3];
+	// color = t->pixels[t->height * y + x * BPP] << 24;
+	// color += t->pixels[t->height * y + x * BPP + 1] << 16;
+	// printf("%X\n", color);
 	return (color);
 }
 
+// uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y, float shade)
+// {
+// 	uint32_t	color;
+
+// 	color = (int)(t->pixels[t->height * y * BPP + x * BPP] * shade) << 24 | \
+// 	(int)(t->pixels[t->height * y * BPP + x * BPP + 1] * shade) << 16 | \
+// 	(int)(t->pixels[t->height * y * BPP + x * BPP + 2] * shade) << 8 | \
+// 	t->pixels[t->height * y * BPP + x * BPP + 3];
+// 	return (color);
+// }
+
 void	set_tex_values(t_ray ray, t_player player, t_texture *t)
 {
-	t->lineH = (WIN_H * MAPS) / ray.dist;
+	t->lineH = (WIN_H * 64) / ray.dist;
 	t->t = player.textures[ray.wall];
 	t->ty_step = 1.0 * t->t->height / t->lineH;
 	t->ty_off = 0;
@@ -108,30 +108,25 @@ void	draw_texture(t_ray ray, t_player player, int32_t color)
 {
 	t_texture	t;
 	int	i;
-	u_int32_t j;
 
 	set_tex_values(ray, player, &t);
 	i = 0;
 	while (i < t.lineH)
 	{
-		color = get_texcolor(t.t, (int) t.tx, (int)t.ty, ray.shade);
-		j = 0;
-		while (j < 7 && (ray.r * 7 + j) < WIN_W)
-			player.map3d->buffer[(int)(i + t.lineO)][ray.r * 7 + j++] = color;
+		color = get_texcolor(t.t, (int) t.tx, (int)t.ty);
+		player.map3d->buffer[(int)(i + t.lineO)][ray.r] = color;
 		t.ty += t.ty_step;
 		i++;
 	}
 	i = 0;
 	while (i < WIN_H)
 	{
-		j = 0;
 		if (i < t.lineO)
 			color = CEILING;
 		if (i > t.lineH + t.lineO)
 			color = FLOOR;
 		if (i < t.lineO || i > t.lineH + t.lineO)
-			while (j < 7 && (ray.r * 7 + j) < WIN_W)
-				player.map3d->buffer[i][ray.r * 7 + j++] = color;
+			player.map3d->buffer[i][ray.r] = color;
 		i++;
 	}
 }
@@ -256,7 +251,7 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 			else
 				ray.wall = EAST;
 		}
-		ray.ra += DR / 2;
+		ray.ra += DR / (WIN_W / 60);
 		if (ray.ra < 0)
 			ray.ra += 2 * PI;
 		if (ray.ra > 2 * PI)

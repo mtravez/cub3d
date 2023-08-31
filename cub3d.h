@@ -17,9 +17,9 @@
 # define PI2 PI / 2
 # define PI3 3 * PI / 2
 # define DR 0.0174533
-# define RAYNR 120
-# define WIN_H 500
-# define WIN_W 750
+# define WIN_H 750
+# define WIN_W 1024
+# define RAYNR WIN_W
 
 
 typedef struct s_data
@@ -94,4 +94,5 @@ typedef struct	s_texture
 
 void paint_image(mlx_image_t *img, int32_t color);
 void	draw_rays_3d(t_player player, mlx_image_t *crash);
-uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y, float shade);
+// uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y, float shade);
+uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y);
