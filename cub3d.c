@@ -6,21 +6,21 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:21:07 by mtravez           #+#    #+#             */
-/*   Updated: 2023/08/30 16:38:32 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/08/31 16:02:52 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-char map[8][8] = {
-	{'1','1','1','1','1','1','1','1'},
-	{'1','0','0','0','0','0','0','1'},
-	{'1','0','1','0','0','0','0','1'},
-	{'1','1','1','0','0','0','0','1'},
-	{'1','0','0','0','0','0','0','1'},
-	{'1','0','0','0','0','1','0','1'},
-	{'1','0','1','0','0','1','0','1'},
-	{'1','1','1','1','1','1','1','1'}
+char map[10][10] = {
+	{'1','1','1','1','1','1','1','1','1','1'},
+	{'1','0','0','0','0','0','0','0','0','1'},
+	{'1','0','1','0','0','0','0','0','0','1'},
+	{'1','1','1','0','0','0','0','0','0','1'},
+	{'1','0','0','0','0','0','0','0','0','1'},
+	{'1','0','0','0','0','1','0','0','0','1'},
+	{'1','0','1','0','0','1','0','0','0','1'},
+	{'1','1','1','1','1','1','1','1','1','1'}
 };
 
 mlx_image_t *crash;
@@ -126,16 +126,16 @@ void buttons(mlx_key_data_t key, void *param)
 		player->pa -= 0.1;
 		if (player->pa < 0)
 			player->pa += 2 * PI;
-		player->pdx = cos(player->pa) * 5;
-		player->pdy = sin(player->pa) * 5;
+		player->pdx = cos(player->pa) * 7;
+		player->pdy = sin(player->pa) * 7;
 	}
 	if (key.key == MLX_KEY_RIGHT)
 	{
 		player->pa += 0.1;
 		if (player->pa > 2 * PI)
 			player->pa -= 2 * PI;
-		player->pdx = cos(player->pa) * 5;
-		player->pdy = sin(player->pa) * 5;
+		player->pdx = cos(player->pa) * 7;
+		player->pdy = sin(player->pa) * 7;
 	}
 
 	int xo;
@@ -241,16 +241,16 @@ int main()
 	}
 	player.mlx = mlx;
 	player.img = mlx_new_image(mlx, WIN_W, WIN_H);
-	player.textures[0] = mlx_load_png("pics/redbrick.png");
+	player.textures[0] = mlx_load_png("pics/purplestone.png");
 	player.textures[1] = mlx_load_png("pics/greystone.png");
 	player.textures[2] = mlx_load_png("pics/mossy.png");
-	player.textures[3] = mlx_load_png("pics/eagle.png");
+	player.textures[3] = mlx_load_png("pics/colorstone.png");
 	crash = mlx_new_image(mlx, 10, 10);
 	// draw_map_2d(mlx);
 	// draw_player(mlx, &player);
 	// for (int i = 0; i < RAYNR; i++)
 	// 	mlx_image_to_window(mlx, crash, i, 0);
-	paint_horizon(0xC4FFF3FF, 0x065715FF, mlx);
+	// paint_horizon(0x070808FF, 0x222929FF, mlx);
 	// paint_text(player);
 	// paint_image(player.img, 0xFF0000FF);
 	mlx_image_to_window(mlx, player.img, 0, 0);
@@ -258,10 +258,7 @@ int main()
 	mlx_key_hook(mlx, &buttons, &player);
 	mlx_loop(mlx);
 	mlx_delete_image(mlx, crash);
-	// for (int i = 0; i < RAYNR; i++)
-	// {
-	// 	mlx_delete_image(mlx, map3d.map_3d[i]);
-	// }
+	mlx_delete_image(mlx, player.img);
 	mlx_terminate(mlx);
 	// system("leaks cub3d");
 	return (0);

@@ -3,14 +3,16 @@
 # include <math.h>
 # include <stdio.h>
 # define BPP sizeof(int32_t)
-# define MAPY 8
-# define MAPX 8
+# define MAPY 10
+# define MAPX 10
 # define MAPSIZE 10
-# define MAPS 64
+# define MAPS 100
 # define PINK 0xFAA0EFFF
 # define SHADOW 0xB876B0FF
 # define GROUND 0x0000004B
 # define WALL 0xAFFAA04B
+# define FLOOR 0x222929FF
+# define CEILING 0x070808FF
 # define PI 3.14159265359
 # define PI2 PI / 2
 # define PI3 3 * PI / 2
@@ -78,6 +80,17 @@ typedef struct s_ray
 	t_direction wall;
 	float	shade;
 }	t_ray;
+
+typedef struct	s_texture
+{
+	mlx_texture_t	*t;
+	float	tx;
+	float	ty;
+	float	ty_off;
+	float	ty_step;
+	int		lineH;
+	float	lineO;
+}	t_texture;
 
 void paint_image(mlx_image_t *img, int32_t color);
 void	draw_rays_3d(t_player player, mlx_image_t *crash);

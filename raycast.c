@@ -1,14 +1,14 @@
 #include "cub3d.h"
 
-static char map[8][8] = {
-	{'1','1','1','1','1','1','1','1'},
-	{'1','0','0','0','0','0','0','1'},
-	{'1','0','1','0','0','0','0','1'},
-	{'1','1','1','0','0','0','0','1'},
-	{'1','0','0','0','0','0','0','1'},
-	{'1','0','0','0','0','1','0','1'},
-	{'1','0','1','0','0','1','0','1'},
-	{'1','1','1','1','1','1','1','1'}
+static char map[10][10] = {
+	{'1','1','1','1','1','1','1','1','1','1'},
+	{'1','0','0','0','0','0','0','0','0','1'},
+	{'1','0','1','0','0','0','0','0','0','1'},
+	{'1','1','1','0','0','0','0','0','0','1'},
+	{'1','0','0','0','0','0','0','0','0','1'},
+	{'1','0','0','0','0','1','0','0','0','1'},
+	{'1','0','1','0','0','1','0','0','0','1'},
+	{'1','1','1','1','1','1','1','1','1','1'}
 };
 
 float	dist(float ax, float ay, float bx, float by, float ang)
@@ -74,78 +74,65 @@ uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y, float shade)
 	(int)(t->pixels[t->height * y * BPP + x * BPP + 1] * shade) << 16 | \
 	(int)(t->pixels[t->height * y * BPP + x * BPP + 2] * shade) << 8 | \
 	t->pixels[t->height * y * BPP + x * BPP + 3];
-	// color = t->pixels[t->height * y + x * BPP] << 24;
-	// color += t->pixels[t->height * y + x * BPP + 1] << 16;
-	// printf("%X\n", color);
 	return (color);
 }
 
-// void	draw_texture(t_ray ray, t_player player, int32_t color)
-// {
-// 	mlx_texture_t *t = player.textures[0];
-// 	float lineH = (MAPS * WIN_H) / ray.dist;
-// 	if (lineH > WIN_H)
-// 		lineH = WIN_H;
-// 	float lineO = (WIN_H / 2) - lineH / 2;
-// 	// if (player.map3d->map_3d[ray.r])
-// 	// 	mlx_delete_image(player.mlx, player.map3d->map_3d[ray.r]);
-// 	// player.map3d->map_3d[ray.r] = mlx_new_image(player.mlx, WIN_W / 57.0, lineH);
-// 	// paint_image(player.img, color);
-// 	// mlx_image_to_window(player.mlx, player.map3d->map_3d[ray.r], (ray.r * WIN_W * 0.018) - ray.r, lineO);
-// 	// printf("%f\n", ray.rx);
-// 	// if (player.img)
-// 	// 	mlx_delete_image(player.mlx, player.img);
-// 	// player.img = mlx_new_image(player.mlx, WIN_W, WIN_W);
-// 	for (u_int32_t i = 0; i < lineH; i++)
-// 	{
-// 		u_int32_t j = 0;
-// 		while (j < 13 && (ray.r * 13 + j) < WIN_W)
-// 		{
-// 			// mlx_put_pixel(player.img, (ray.r * 13) + j, i + lineO, color);
-// 			player.map3d->buffer[(int)(i + lineO)][ray.r * 13 + j] = color;
-// 			j++;
-// 		}
-// 	}
-// }
-
-void	draw_texture(t_ray ray, t_player player, int32_t color)
+void	set_tex_values(t_ray ray, t_player player, t_texture *t)
 {
-	mlx_texture_t *t = player.textures[ray.wall];
-	int lineH = (WIN_H * MAPS) / ray.dist;
-	float ty_step = 1.0 * t->height / lineH;
-	float ty_off = 0;
-	if (lineH > WIN_H)
+	t->lineH = (WIN_H * MAPS) / ray.dist;
+	t->t = player.textures[ray.wall];
+	t->ty_step = 1.0 * t->t->height / t->lineH;
+	t->ty_off = 0;
+	if (t->lineH > WIN_H)
 	{
-		ty_off = (lineH - WIN_H) / 2.0;
-		lineH = WIN_H;
+		t->ty_off = (t->lineH - WIN_H) / 2.0;
+		t->lineH = WIN_H;
 	}
-	float lineO = (WIN_H / 2) - (lineH / 2);
-	float ty = ty_off * ty_step;
-	// float tx = (int) (ray.rx / 2.0) % t->width;
-	float tx;
+	t->lineO = (WIN_H / 2) - (t->lineH / 2);
+	t->ty = t->ty_off * t->ty_step;
 	if (ray.disV > ray.disH)
 	{
-		tx = (int)(ray.rx) % t->width;
+		t->tx = (int)(ray.rx) % t->t->width;
 		if (ray.ra > PI)
-			tx = t->width - 1 - tx;
+			t->tx = t->t->width - 1 - t->tx;
 	}
 	else
 	{
-		tx = (int) (ray.ry) % t->height;
+		t->tx = (int) (ray.ry) % t->t->height;
 		if (ray.ra > 0 && ray.ra < PI2)
-			tx = t->height - 1 - tx;
+			t->tx = t->t->height - 1 - t->tx;
 	}
-	for (int i = 0; i < lineH; i++)
+}
+
+void	draw_texture(t_ray ray, t_player player, int32_t color)
+{
+	t_texture	t;
+	int	i;
+	u_int32_t j;
+
+	set_tex_values(ray, player, &t);
+	i = 0;
+	while (i < t.lineH)
 	{
-		color = get_texcolor(t, (int) tx, (int)ty, ray.shade);
-		u_int32_t j = 0;
+		color = get_texcolor(t.t, (int) t.tx, (int)t.ty, ray.shade);
+		j = 0;
 		while (j < 7 && (ray.r * 7 + j) < WIN_W)
-		{
-			// mlx_put_pixel(player.img, (ray.r * 13) + j, i + lineO, color);
-			player.map3d->buffer[(int)(i + lineO)][ray.r * 7 + j] = color;
-			j++;
-		}
-		ty += ty_step;
+			player.map3d->buffer[(int)(i + t.lineO)][ray.r * 7 + j++] = color;
+		t.ty += t.ty_step;
+		i++;
+	}
+	i = 0;
+	while (i < WIN_H)
+	{
+		j = 0;
+		if (i < t.lineO)
+			color = CEILING;
+		if (i > t.lineH + t.lineO)
+			color = FLOOR;
+		if (i < t.lineO || i > t.lineH + t.lineO)
+			while (j < 7 && (ray.r * 7 + j) < WIN_W)
+				player.map3d->buffer[i][ray.r * 7 + j++] = color;
+		i++;
 	}
 }
 
@@ -256,7 +243,6 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 				ray.wall = SOUTH;
 			else
 				ray.wall = NORTH;
-			// if (ray.ra > 0 && ray.ra < PI2)
 		}
 		else
 		{
@@ -269,15 +255,12 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 				ray.wall = WEST;
 			else
 				ray.wall = EAST;
-			// if (ray.ra > PI)
 		}
 		ray.ra += DR / 2;
 		if (ray.ra < 0)
 			ray.ra += 2 * PI;
 		if (ray.ra > 2 * PI)
 			ray.ra -= 2 * PI;
-		// crash->instances[ray.r].x = ray.rx;
-		// crash->instances[ray.r].y = ray.ry;
 		paint_image(crash, 0xFF0000FF);
 		
 		//---DRAW 3D WALLS---
@@ -287,9 +270,7 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 		if (ca > 2 * PI)
 			ca -= 2 * PI;
 		ray.dist *= cos(ca);
-		// ray.wall = EAST;
 		draw_texture(ray, player, color);
-		// break;
 		ray.r++;
 	}
 	paint_buffer(player);
