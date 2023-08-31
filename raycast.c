@@ -99,7 +99,7 @@ void	set_tex_values(t_ray ray, t_player player, t_texture *t)
 	else
 	{
 		t->tx = (int) (ray.ry) % t->t->height;
-		if (ray.ra > 0 && ray.ra < PI2)
+		if (ray.ra > PI2 && ray.ra < PI3)
 			t->tx = t->t->height - 1 - t->tx;
 	}
 }
@@ -121,9 +121,9 @@ void	draw_texture(t_ray ray, t_player player, int32_t color)
 	i = 0;
 	while (i < WIN_H)
 	{
-		if (i < t.lineO)
+		if (i <= t.lineO)
 			color = CEILING;
-		if (i > t.lineH + t.lineO)
+		if (i >= t.lineH + t.lineO)
 			color = FLOOR;
 		if (i < t.lineO || i > t.lineH + t.lineO)
 			player.map3d->buffer[i][ray.r] = color;
