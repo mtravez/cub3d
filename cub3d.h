@@ -13,21 +13,13 @@
 # define WALL 0xAFFAA04B
 # define FLOOR 0x222929FF
 # define CEILING 0x070808FF
-# define PI 3.14159265359
-# define PI2 PI / 2
-# define PI3 3 * PI / 2
+# define PI 3.14159265359 //WEST
+# define PI2 PI / 2 //SOUTH
+# define PI3 3 * PI / 2 //NORTH
 # define DR 0.0174533
 # define WIN_H 750
 # define WIN_W 1024
 # define RAYNR WIN_W
-
-
-typedef struct s_data
-{
-	char **map;
-	int height;
-	int width;
-}	t_data;
 
 typedef enum e_direction
 {
@@ -36,6 +28,18 @@ typedef enum e_direction
 	WEST,
 	NORTH
 }	t_direction;
+
+typedef struct s_data
+{
+	char **map;
+	int height;
+	int width;
+	t_direction	player_dir;
+	int	player_x;
+	int player_y;
+	uint32_t	color_f;
+	uint32_t	color_c;
+}	t_data;
 
 typedef struct s_map3d
 {

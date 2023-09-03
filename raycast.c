@@ -131,13 +131,25 @@ void	draw_texture(t_ray ray, t_player player, int32_t color)
 	}
 }
 
+void	start_ray(t_ray *ray, t_player player)
+{
+	ray->dof = 0;
+	ray->disH = 10000000;
+	ray->hx = player.px;
+	ray->hy = player.py;
+	// ray->dof = 0;
+	ray->disV = 10000000;
+	ray->vx = player.px;
+	ray->vy = player.py;
+}
+
 void	draw_rays_3d(t_player player, mlx_image_t *crash)
 {
-	t_ray ray;
-	float	aTan;
+	t_ray	ray;
+	// float	aTan;
 	float	nTan;
+	float	ca;
 	int32_t	color;
-	int		size;
 
 	color = PINK;
 	ray.ra = player.pa - DR * 30;
@@ -146,30 +158,24 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 	if (ray.ra > 2 * PI)
 		ray.ra -= 2 * PI;
 	ray.r = 0;
-	size = 0;
 	clear_buffer(player.map3d);
 	while (ray.r < RAYNR)
 	{
 		//---HORIZONTAL WALLS---
-		ray.dof = 0;
-		ray.disH = 10000000;
-		ray.hx = player.px;
-		ray.hy = player.py;
-		aTan = -1 / tan(ray.ra);
+		start_ray(&ray, player);
+		// aTan = -1 / tan(ray.ra);
 		if (ray.ra > PI)
 		{
 			ray.ry = (((int) player.py >> 6) << 6) - 0.0001;
-			ray.rx = (player.py - ray.ry) * aTan + player.px;
 			ray.yo = -64;
-			ray.xo = -ray.yo * aTan;
 		}
-		if (ray.ra < PI)
+		if (ray.ra <= PI)
 		{
 			ray.ry = (((int) player.py >> 6) << 6) + 64;
-			ray.rx = (player.py - ray.ry) * aTan + player.px;
 			ray.yo = 64;
-			ray.xo = -ray.yo * aTan;
 		}
+		ray.rx = (player.py - ray.ry) * (-1 / tan(ray.ra)) + player.px;
+		ray.xo = -ray.yo * (-1 / tan(ray.ra));
 		while (ray.dof < 8)
 		{
 			ray.mx = (int) (ray.rx) >> 6;
@@ -179,36 +185,28 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 				ray.hx = ray.rx;
 				ray.hy = ray.ry;
 				ray.disH = dist(player.px, player.py, ray.hx, ray.hy, ray.ra);
-				ray.dof = 8;
+				break;
 			}
-			else
-			{
-				ray.rx += ray.xo;
-				ray.ry += ray.yo;
-				ray.dof += 1;
-			}
+			ray.rx += ray.xo;
+			ray.ry += ray.yo;
+			ray.dof += 1;
 		}
 	
 		//---VERTICAL WALLS---
 		ray.dof = 0;
-		ray.disV = 10000000;
-		ray.vx = player.px;
-		ray.vy = player.py;
 		nTan = -tan(ray.ra);
 		if (ray.ra > PI2 && ray.ra < PI3)
 		{
 			ray.rx = (((int) player.px >> 6) << 6) - 0.0001;
-			ray.ry = (player.px - ray.rx) * nTan + player.py;
 			ray.xo = -64;
-			ray.yo = -ray.xo * nTan;
 		}
 		if (ray.ra < PI2 || ray.ra > PI3)
 		{
 			ray.rx = (((int) player.px >> 6) << 6) + 64;
-			ray.ry = (player.px - ray.rx) * nTan + player.py;
 			ray.xo = 64;
-			ray.yo = -ray.xo * nTan;
 		}
+		ray.ry = (player.px - ray.rx) * nTan + player.py;
+		ray.yo = -ray.xo * nTan;
 		while (ray.dof < 8)
 		{
 			ray.mx = (int) (ray.rx) >> 6;
@@ -218,14 +216,11 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 				ray.vx = ray.rx;
 				ray.vy = ray.ry;
 				ray.disV = dist(player.px, player.py, ray.vx, ray.vy, ray.ra);
-				ray.dof = 8;
+				break;
 			}
-			else
-			{
-				ray.rx += ray.xo;
-				ray.ry += ray.yo;
-				ray.dof += 1;
-			}
+			ray.rx += ray.xo;
+			ray.ry += ray.yo;
+			ray.dof += 1;
 		}
 		if (ray.disH < ray.disV)
 		{
@@ -259,7 +254,7 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 		paint_image(crash, 0xFF0000FF);
 		
 		//---DRAW 3D WALLS---
-		float ca = player.pa - ray.ra;
+		ca = player.pa - ray.ra;
 		if (ca < 0)
 			ca += 2 * PI;
 		if (ca > 2 * PI)

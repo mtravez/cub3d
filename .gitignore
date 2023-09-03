@@ -1,2 +1,5 @@
 include: MLX42/.gitignore
+cub3d
+obj/*
+*.o
 # .gitignore
