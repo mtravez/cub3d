@@ -6,7 +6,7 @@
 # define MAPY 10
 # define MAPX 10
 # define MAPSIZE 10
-# define MAPS 100
+# define MAPS 80
 # define PINK 0xFAA0EFFF
 # define SHADOW 0xB876B0FF
 # define GROUND 0x0000004B
@@ -29,18 +29,6 @@ typedef enum e_direction
 	NORTH
 }	t_direction;
 
-typedef struct s_data
-{
-	char **map;
-	int height;
-	int width;
-	t_direction	player_dir;
-	int	player_x;
-	int player_y;
-	uint32_t	color_f;
-	uint32_t	color_c;
-}	t_data;
-
 typedef struct s_map3d
 {
 	// mlx_image_t *map_3d[RAYNR];
@@ -49,17 +37,26 @@ typedef struct s_map3d
 
 typedef struct s_player
 {
-	mlx_t		*mlx;
-	mlx_image_t *img;
-	mlx_image_t *dir;
-	mlx_texture_t	*textures[4];
-	t_map3d		*map3d;
-	float	px;
-	float	py;
-	float	pdx; //delta x
-	float	pdy; //delta y
-	float	pa; //angle
+	mlx_t		*mlx; //set at parsing for the textures
+	mlx_image_t *img; //set at main
+	mlx_texture_t	*textures[4];	//set at parsing, use enum for position (only allow square textures, please)
+	t_map3d		*map3d;	//set at runtime
+	float	px;	//set at parsing
+	float	py;	//set at parsing
+	float	pdx; //delta x (set when keypress)
+	float	pdy; //delta y (set when keypress)
+	float	pa; //angle (set at parsing) (PI3 = NORTH, 0 = EAST, PI2 = SOUTH, PI = WEST)
 }	t_player;
+
+typedef struct s_data
+{
+	char **map;
+	int height;
+	int width;
+	// t_player	player; //Don't know if it should be pointer or not
+	uint32_t	color_f;
+	uint32_t	color_c;
+}	t_data;
 
 typedef struct s_ray
 {
