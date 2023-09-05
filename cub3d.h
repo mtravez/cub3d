@@ -29,6 +29,16 @@ typedef enum e_direction
 	NORTH
 }	t_direction;
 
+// typedef struct s_ident
+// {
+// 	char		*ea;
+// 	char		*so;
+// 	char		*we;
+// 	char		*no;
+// 	uint32_t	floor;
+// 	uint32_t	ceiling;
+// } t_ident; 
+
 typedef struct s_data
 {
 	char **map;
@@ -37,8 +47,13 @@ typedef struct s_data
 	t_direction	player_dir;
 	int	player_x;
 	int player_y;
+	char		*ea;
+	char		*so;
+	char		*we;
+	char		*no;
 	uint32_t	color_f;
 	uint32_t	color_c;
+	// t_ident ids;
 }	t_data;
 
 typedef struct s_map3d
