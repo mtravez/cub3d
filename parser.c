@@ -16,6 +16,8 @@
 // 	return (0);
 // }
 
+// -------------------------------------------------------//
+
 void	free_2d(char **str, int i)
 {
 	while (i != 0)
@@ -48,6 +50,8 @@ int	str_eq(const char *s1, const char *s2)
 	return (str_cmp(s1, s2) == 0);
 }
 
+// -------------------------------------------------------//
+
 int	RGB_to_uint(char **frag, uint32_t *color)
 {
 	int	red;
@@ -77,9 +81,9 @@ int	set_color(char *str, uint32_t *color)
 	while(frag[i])
 			i++;
 	if (i != 3)
-		return (free_2d(frag, i), printf("Error\nWrong RGB format\n"), 1);
+		return (free_2d(frag, i), 1);
 	if (RGB_to_uint(frag, color))
-		return (free_2d(frag, i), printf("Error\nInvalid RGB values\n"), 1);
+		return (free_2d(frag, i), 1);
 	
 	printf("color: %u\n", *color);
 	return (0);
@@ -87,7 +91,7 @@ int	set_color(char *str, uint32_t *color)
 
 int	set_id(t_data *data, char **frag)
 {
-	printf("Start: %s\n", frag[0]);
+	// printf("Start: %s\n", frag[0]);
 	if (str_eq(frag[0], "EA\0") && data->ea == NULL)
 		data->ea = ft_strdup(frag[1]);
 	else if (str_eq(frag[0], "SO\0") && data->so == NULL)
@@ -109,8 +113,21 @@ int	set_id(t_data *data, char **frag)
 	}
 	else 
 		return (1);
-	printf("End: %s\n", frag[0]);		
+	// printf("End: %s\n", frag[0]);		
 	return (0);	
+}
+
+int	all_ids_set(t_data *data)
+{
+	if ((data->ea != NULL) &&
+		(data->so != NULL) &&
+		(data->we != NULL) &&
+		(data->no != NULL) &&
+		(data->color_c != 0) &&
+		(data->color_f != 0))
+			return (1);
+	else 
+		return (0);		
 }
 
 int	get_identifiers(t_data *data, int fd)
@@ -122,28 +139,31 @@ int	get_identifiers(t_data *data, int fd)
 
 	i = 0;
 	zykl = 0;
-	// while (line != NULL)
-	// TODO: add function which checks if all ids are completed before parsing the map
-	while (zykl < 7)
+	line = get_next_line(fd);
+	while (line != NULL && !all_ids_set(data)) 
 	{
-		line = get_next_line(fd);
 		if (line[0] != '\n')
 		{
 			frag = ft_split(line, ' ');
 			while(frag[i])
 				i++;
 			if (i != 2)
-				return (free_2d(frag, i), 1);
+				return (free(frag), 1);
 			if (set_id(data, frag))
 				return (free_2d(frag, i), 1);
 			free_2d(frag, i);
 			free(line);	
 		}	
+		line = get_next_line(fd);
+		if (line == NULL && !all_ids_set(data))
+			return (free_2d(frag, i), 1);
 		zykl++;	
 	}
+	printf("zykl: %i\n", zykl);
 	return (0);
 }
 
+// -------------------------------------------------------//
 int check_file_type(char *argv)
 {
 	int i;
@@ -186,9 +206,22 @@ void	init_data(t_data *data)
 	data->so = NULL;
 	data->we = NULL;
 	data->no = NULL;
-	// data->color_f = 
-	// data->color_c = 
+	data->color_f = 0;
+	data->color_c = 0;
 
+}
+
+int	handle_input(int argc, char**argv, int *fd)
+{
+	if (argc < 2)
+		return (printf("Error\nWrong amount args\n"), 1);
+	*fd = open(argv[1], O_RDONLY);
+	if (*fd == -1)
+		return(close(*fd), printf("Error\nopen() failed\n"), 1);
+	if (read(*fd, NULL, 0) < 0)
+		return (close(*fd), printf("Error\nread() failed\n"), 1);
+	else
+		return (0);	 
 }
 
 int	main (int argc, char **argv)
@@ -196,15 +229,9 @@ int	main (int argc, char **argv)
 	t_data	data;
 	int		fd;
 
-	// Put this shit in a function
-	if (argc < 2)
-		return (printf("Error\nWrong amount args\n"), 1);
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-		return(close(fd), printf("Error\nopen() failed\n"), 1);
-	if (read(fd, NULL, 0) < 0)
-		return (close(fd), printf("Error\nread() failed\n"), 1); 
 
+	if (handle_input(argc, argv, &fd))
+		return (1);
 	init_data(&data);	
 	if (parser(&data, argv, fd))
 		return (close(fd), 1);	
