@@ -1,5 +1,5 @@
 NAME = cub3d
-SRC = parser.c
+SRC = parser.c arr.c
 # SRC = cub3d.c raycast.c parser.c
 
 CFLAGS      = -Wall -Wextra -Werror

@@ -29,21 +29,18 @@ typedef enum e_direction
 	NORTH
 }	t_direction;
 
-// typedef struct s_ident
-// {
-// 	char		*ea;
-// 	char		*so;
-// 	char		*we;
-// 	char		*no;
-// 	uint32_t	floor;
-// 	uint32_t	ceiling;
-// } t_ident; 
+typedef struct s_arr
+{
+	char	**data;
+	size_t	size;
+	size_t	max_size;
+}	t_arr;
 
 typedef struct s_data
 {
-	char **map;
-	int height;
-	int width;
+	t_arr 		map;
+	int 		height;
+	int 		width;
 	t_direction	player_dir;
 	int	player_x;
 	int player_y;
@@ -111,7 +108,11 @@ typedef struct	s_texture
 	float	lineO;
 }	t_texture;
 
-void paint_image(mlx_image_t *img, int32_t color);
-void	draw_rays_3d(t_player player, mlx_image_t *crash);
+void 		paint_image(mlx_image_t *img, int32_t color);
+void		draw_rays_3d(t_player player, mlx_image_t *crash);
 // uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y, float shade);
 uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y);
+int 		arr_create(t_arr *arr);
+int 		arr_add(t_arr *arr, char *str);
+char 		*arr_get(t_arr *arr, unsigned long index);
+void 		arr_free(t_arr *arr);

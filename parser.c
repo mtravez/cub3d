@@ -4,18 +4,48 @@
 
 // int	validate_map(t_data data)
 // {
+	// TODO: Fill up the lines with spaces until width 
+	//		 Go through the map and check Player 
+	// 		 Floodfill to check if map is valid
 
 // 	return (0);
 // }
 
-// int get_map(t_data *data, int fd)
-// {
-// 	int height;
-// 	int width;
+int get_map(t_data *data, int fd)
+{
+	char *line;
+	int i;
+	int	len;
+	
+	line = get_next_line(fd);
+	i = 0;
+	while (line[0] == '\n')
+		line = get_next_line(fd);	
+	if (arr_create(&data->map))
+		return (1);
+	while (line != NULL) 
+	{
+		if (line[0] == '\n')
+			return(free(line), arr_free(&data->map), 1);	
+		if (arr_add(&data->map, line))
+			return (1);
+		len = ft_strlen(data->map.data[i]) - 1;
+		if (len > data->width)
+			data->width = len;
+		if (data->map.data[i][len] == '\n')		
+			data->map.data[i][len] = '\0';	
+		// printf("len: %lu", ft_strlen(data->map.data[i]));	
+		printf("s: %s\n", data->map.data[i]);	
+		line = get_next_line(fd);
+		if (line == NULL)
+			return (free(line), arr_free(&data->map), 0);	
+		data->height = i++;		
+		// printf("width: %i\n", data->width);	
+	}
+	return (0);
+}
 
-// 	return (0);
-// }
-
+// utils
 // -------------------------------------------------------//
 
 void	free_2d(char **str, int i)
@@ -50,6 +80,7 @@ int	str_eq(const char *s1, const char *s2)
 	return (str_cmp(s1, s2) == 0);
 }
 
+// get_identifier()
 // -------------------------------------------------------//
 
 int	RGB_to_uint(char **frag, uint32_t *color)
@@ -66,7 +97,6 @@ int	RGB_to_uint(char **frag, uint32_t *color)
 		return (1);
 	if (red > 255 || green > 255 || blue > 255)	
 		return (1);
-	// *color = ((red << 16) | (green << 8) | blue | 255);
 	*color = ((red << 24) | (green << 16) | (blue << 8) | 255);
 	return (0);
 }
@@ -84,14 +114,12 @@ int	set_color(char *str, uint32_t *color)
 		return (free_2d(frag, i), 1);
 	if (RGB_to_uint(frag, color))
 		return (free_2d(frag, i), 1);
-	
-	printf("color: %u\n", *color);
+	// printf("color: %u\n", *color);
 	return (0);
 }
 
 int	set_id(t_data *data, char **frag)
 {
-	// printf("Start: %s\n", frag[0]);
 	if (str_eq(frag[0], "EA\0") && data->ea == NULL)
 		data->ea = ft_strdup(frag[1]);
 	else if (str_eq(frag[0], "SO\0") && data->so == NULL)
@@ -113,7 +141,6 @@ int	set_id(t_data *data, char **frag)
 	}
 	else 
 		return (1);
-	// printf("End: %s\n", frag[0]);		
 	return (0);	
 }
 
@@ -135,10 +162,8 @@ int	get_identifiers(t_data *data, int fd)
 	char *line;
 	char **frag;
 	int i;
-	int zykl;
 
 	i = 0;
-	zykl = 0;
 	line = get_next_line(fd);
 	while (line != NULL && !all_ids_set(data)) 
 	{
@@ -156,13 +181,12 @@ int	get_identifiers(t_data *data, int fd)
 		}	
 		line = get_next_line(fd);
 		if (line == NULL && !all_ids_set(data))
-			return (free_2d(frag, i), 1);
-		zykl++;	
+			return (free(line), 1);	
 	}
-	printf("zykl: %i\n", zykl);
 	return (0);
 }
 
+// check_file_type()
 // -------------------------------------------------------//
 int check_file_type(char *argv)
 {
@@ -187,8 +211,8 @@ int parser(t_data *data, char **argv, int fd)
 		return (close(fd), printf("Error\nYou need a .cub file\n"), 1);
 	if (get_identifiers(data, fd))
 		return (close(fd), printf("Error\nFetching Identificators failed\n"), 1);
-	// if (get_map(data, fd))
-	// 	return (close(fd), printf("Error\nFetching Map failed\n"), 1);	
+	if (get_map(data, fd))
+		return (close(fd), printf("Error\nFetching map failed\n"), 1);	
 	// if (validate_map(data))
 	// 	return (1);	
 	return (0);	
@@ -196,9 +220,9 @@ int parser(t_data *data, char **argv, int fd)
 
 void	init_data(t_data *data)
 {
-	// data->map =
-	// data->height =
-	// data->width =
+	// data->map = NULL;
+	data->height = 0;
+	data->width = 0;
 	// data->player_dir =
 	// data->player_x =
 	// data->player_y =
@@ -228,7 +252,6 @@ int	main (int argc, char **argv)
 {
 	t_data	data;
 	int		fd;
-
 
 	if (handle_input(argc, argv, &fd))
 		return (1);
