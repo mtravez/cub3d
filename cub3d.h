@@ -39,11 +39,11 @@ typedef struct s_arr
 typedef struct s_data
 {
 	t_arr 		map;
-	int 		height;
-	int 		width;
+	size_t		width;
+	size_t		height;
 	t_direction	player_dir;
-	int	player_x;
-	int player_y;
+	size_t		player_x;
+	size_t		player_y;
 	char		*ea;
 	char		*so;
 	char		*we;

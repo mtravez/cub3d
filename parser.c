@@ -2,20 +2,120 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-// int	validate_map(t_data data)
-// {
-	// TODO: Fill up the lines with spaces until width 
-	//		 Go through the map and check Player 
-	// 		 Floodfill to check if map is valid
+	// TODO: Floodfill to check if map is valid
+int	floodfill(t_data *data)
+{
 
-// 	return (0);
-// }
+}	
+
+int	is_player_pos_set(t_data *data)
+{
+	if (data->player_dir >= 0 && data->player_dir < 4)
+		return (1);
+	return (0);	
+}
+
+int	player_position(t_data *data, size_t y, size_t x)
+{
+	char c;
+
+	c = data->map.data[y][x];
+	if ((c == 'E' || c == 'S' || c == 'W' || c == 'N') && is_player_pos_set(data))
+		return (1);
+	else if ((c == 'E' || c == 'S' || c == 'W' || c == 'N') && !is_player_pos_set(data))
+	{
+		data->player_x = x + 1;
+		data->player_y = y + 1;
+		if (c == 'E')
+			data->player_dir = EAST;
+		else if (c == 'S')
+			data->player_dir = SOUTH;
+		else if (c == 'W')
+			data->player_dir = WEST;
+		else if (c == 'N')
+			data->player_dir = NORTH;					
+	}
+	return (0);
+}
+
+
+int	invalid_character(char c)
+{
+	if (c != ' ' && c != '0' && c != '1' && c != 'E' && c != 'S' && c != 'W' && c != 'N')
+		return (1);
+	return (0);	
+}
+	// TODO: Check Player pos, only one and set pos x=j y=i
+int	check_player(t_data *data)
+{
+	size_t y;
+	size_t x;
+
+	y = 0;
+	while (y < data->map.size)
+	{
+		x = 0;	
+        while (x < data->width)
+		{
+        	if (invalid_character(data->map.data[y][x]))
+				return (1);
+			if (player_position(data, y, x))
+				return (1);	
+			x++;	
+        }
+        y++;
+	}
+	data->height = data->map.size;
+	return (0);
+}
+
+int	standartise_map(t_data *data)
+{
+	size_t i;
+	size_t j;
+	char *str;
+
+	i = 0;
+	while (i < data->map.size)
+	{
+        str = malloc((data->width + 1) * sizeof(char));
+        if (str == NULL)
+            return (1);
+		j = 0;	
+        while (j < data->width)
+        {	
+            if (j < ft_strlen(data->map.data[i]))
+                str[j] = data->map.data[i][j];
+            else
+                str[j] = ' ';
+            j++;
+        }
+        str[data->width] = '\0';
+		free(data->map.data[i]);
+		data->map.data[i] = str;
+        i++;
+	}
+	return (0);
+}
+
+int	validate_map(t_data *data)
+{
+	if (standartise_map(data))
+		return (1);
+	if (check_player(data))
+		return (1);
+	if (!is_player_pos_set(data))
+		return (1);
+	if (floodfill(data))
+		return (1);		
+	return (0);
+}
 
 int get_map(t_data *data, int fd)
 {
 	char *line;
 	int i;
-	int	len;
+	size_t	len;
 	
 	line = get_next_line(fd);
 	i = 0;
@@ -34,13 +134,10 @@ int get_map(t_data *data, int fd)
 			data->width = len;
 		if (data->map.data[i][len] == '\n')		
 			data->map.data[i][len] = '\0';	
-		// printf("len: %lu", ft_strlen(data->map.data[i]));	
-		printf("s: %s\n", data->map.data[i]);	
 		line = get_next_line(fd);
 		if (line == NULL)
-			return (free(line), arr_free(&data->map), 0);	
-		data->height = i++;		
-		// printf("width: %i\n", data->width);	
+			return (free(line), 0);	
+		i++;
 	}
 	return (0);
 }
@@ -213,15 +310,15 @@ int parser(t_data *data, char **argv, int fd)
 		return (close(fd), printf("Error\nFetching Identificators failed\n"), 1);
 	if (get_map(data, fd))
 		return (close(fd), printf("Error\nFetching map failed\n"), 1);	
-	// if (validate_map(data))
-	// 	return (1);	
+	if (validate_map(data))
+		return (close(fd), arr_free(&data->map), printf("Error\nInvalid map\n"), 1);	
+	
 	return (0);	
 }
 
 void	init_data(t_data *data)
 {
 	// data->map = NULL;
-	data->height = 0;
 	data->width = 0;
 	// data->player_dir =
 	// data->player_x =
@@ -260,5 +357,17 @@ int	main (int argc, char **argv)
 		return (close(fd), 1);	
 	// if (RAYCASTER())
 	// 	return (1);
+	size_t i = 0;
+	while (i < data.map.size)
+	{
+		printf("m: %s\n", data.map.data[i]);
+		i++;
+	}
+	printf("y-axis:	%zu\n", data.map.size);
+	printf("height:	%zu\n", data.height);
+	printf("x-axis:	%zu\n", data.width);
+	printf("p-dir:	%u\n", data.player_dir);
+	printf("p-y:	%zu\n", data.player_y);
+	printf("p-x:	%zu\n", data.player_x);
 	return (printf("Success\n"), 0);	
 }

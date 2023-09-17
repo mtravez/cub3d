@@ -20,7 +20,7 @@ int arr_create(t_arr *arr)
 	arr->size = 0;
 	arr->max_size = 1;
 	arr->data = malloc(sizeof(char *));
-	return (arr == NULL);
+	return (arr->data == NULL);
 }
 
 int arr_add(t_arr *arr, char *str)
