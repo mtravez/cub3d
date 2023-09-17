@@ -24,8 +24,8 @@ int	player_position(t_data *data, size_t y, size_t x)
 		return (1);
 	else if ((c == 'E' || c == 'S' || c == 'W' || c == 'N') && !is_player_pos_set(data))
 	{
-		data->player_x = x + 1;
-		data->player_y = y + 1;
+		data->player_x = x;
+		data->player_y = y;
 		if (c == 'E')
 			data->player_dir = EAST;
 		else if (c == 'S')
