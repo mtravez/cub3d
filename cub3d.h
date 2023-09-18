@@ -116,3 +116,15 @@ int 		arr_create(t_arr *arr);
 int 		arr_add(t_arr *arr, char *str);
 char 		*arr_get(t_arr *arr, unsigned long index);
 void 		arr_free(t_arr *arr);
+
+// PARSER
+int			handle_input(int argc, char**argv, int *fd);
+void		init_data(t_data *data);
+int			parser(t_data *data, char **argv, int fd);
+int			check_file_type(char *argv);
+int			get_identifiers(t_data *data, int fd);
+int			get_map(t_data *data, int fd);
+int			validate_map(t_data *data);
+
+void		free_2d(char **str, int i);
+int			str_eq(const char *s1, const char *s2);
