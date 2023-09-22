@@ -8,6 +8,8 @@ static char map[10][10] = {
 	{'1','0','0','0','0','0','0','0','0','1'},
 	{'1','0','0','0','0','1','0','0','0','1'},
 	{'1','0','1','0','0','1','0','0','0','1'},
+	{'1','0','1','0','0','1','0','0','0','1'},
+	{'1','0','1','0','0','1','0','0','0','1'},
 	{'1','1','1','1','1','1','1','1','1','1'}
 };
 
@@ -79,7 +81,7 @@ uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y)
 
 void	set_tex_values(t_ray ray, t_player player, t_texture *t)
 {
-	t->lineH = (WIN_H * 64) / ray.dist;
+	t->lineH = (WIN_H * MAPS) / ray.dist;
 	t->t = player.textures[ray.wall];
 	t->ty_step = 1.0 * t->t->height / t->lineH;
 	t->ty_off = 0;
@@ -92,13 +94,13 @@ void	set_tex_values(t_ray ray, t_player player, t_texture *t)
 	t->ty = t->ty_off * t->ty_step;
 	if (ray.disV > ray.disH)
 	{
-		t->tx = (int)(ray.rx) % t->t->width;
+		t->tx = (int)(ray.rx * (t->t->width / 64)) % t->t->width;
 		if (ray.ra > PI)
 			t->tx = t->t->width - 1 - t->tx;
 	}
 	else
 	{
-		t->tx = (int) (ray.ry) % t->t->height;
+		t->tx = (int) (ray.ry  * (t->t->width / 64)) % t->t->height;
 		if (ray.ra > PI2 && ray.ra < PI3)
 			t->tx = t->t->height - 1 - t->tx;
 	}

@@ -20,6 +20,8 @@ char map[10][10] = {
 	{'1','0','0','0','0','0','0','0','0','1'},
 	{'1','0','0','0','0','1','0','0','0','1'},
 	{'1','0','1','0','0','1','0','0','0','1'},
+	{'1','0','1','0','0','1','0','0','0','1'},
+	{'1','0','1','0','0','1','0','0','0','1'},
 	{'1','1','1','1','1','1','1','1','1','1'}
 };
 
@@ -78,18 +80,18 @@ void paint_image(mlx_image_t *img, int32_t color)
 // 	}
 // }
 
-void	draw_player(void *mlx, t_player *player)
-{
-	player->img = mlx_new_image(mlx, 10, 10);
-	// ft_memset(player->img->pixels, get_rgba(245, 40, 145, 1), player->img->width * player->img->height * BPP);
-	paint_image(player->img, 0xFAA0EFFF);
+// void	draw_player(void *mlx, t_player *player)
+// {
+// 	player->img = mlx_new_image(mlx, 10, 10);
+// 	// ft_memset(player->img->pixels, get_rgba(245, 40, 145, 1), player->img->width * player->img->height * BPP);
+// 	paint_image(player->img, 0xFAA0EFFF);
 	
-	player->dir = mlx_new_image(mlx, 4, 4);
-	paint_image(player->dir, 0x0000FFFF);
+// 	player->dir = mlx_new_image(mlx, 4, 4);
+// 	paint_image(player->dir, 0x0000FFFF);
 	
-	mlx_image_to_window(mlx, player->img, player->px, player->py);
-	mlx_image_to_window(mlx, player->dir, player->img->instances[0].x + player->pdx * 5, player->img->instances[0].y + player->pdy * 5 + 10);
-}
+// 	mlx_image_to_window(mlx, player->img, player->px, player->py);
+// 	mlx_image_to_window(mlx, player->dir, player->img->instances[0].x + player->pdx * 5, player->img->instances[0].y + player->pdy * 5 + 10);
+// }
 
 void	draw_map_2d(void *mlx)
 {
@@ -241,7 +243,8 @@ int main()
 	}
 	player.mlx = mlx;
 	player.img = mlx_new_image(mlx, WIN_W, WIN_H);
-	player.textures[0] = mlx_load_png("pics/bluestone.png");
+	player.textures[0] = mlx_load_png("pics/pngtree.png");
+	// mlx_texture_to_image(mlx, player.textures[0]);
 	player.textures[1] = mlx_load_png("pics/greystone.png");
 	player.textures[2] = mlx_load_png("pics/mossy.png");
 	player.textures[3] = mlx_load_png("pics/colorstone.png");
