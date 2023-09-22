@@ -1,5 +1,6 @@
 NAME = cub3d
-SRC = cub3d.c raycast.c
+SRC = main.c arr.c input_data.c parser.c get_identifier.c get_map.c validate_map.c check_player.c utils.c
+# SRC = cub3d.c raycast.c parser.c
 
 CFLAGS      = -Wall -Wextra -Werror -fsanitize=address
 

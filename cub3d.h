@@ -29,6 +29,29 @@ typedef enum e_direction
 	NORTH
 }	t_direction;
 
+typedef struct s_arr
+{
+	char	**data;
+	size_t	size;
+	size_t	max_size;
+}	t_arr;
+
+typedef struct s_data
+{
+	t_arr 		map;
+	size_t		width;			//starting from 1
+	size_t		height;			//starting from 1
+	t_direction	player_dir;
+	size_t		player_x;		//arr_index
+	size_t		player_y;		//arr_index
+	char		*ea;
+	char		*so;
+	char		*we;
+	char		*no;
+	uint32_t	color_f;
+	uint32_t	color_c;
+}	t_data;
+
 typedef struct s_map3d
 {
 	// mlx_image_t *map_3d[RAYNR];
@@ -47,16 +70,6 @@ typedef struct s_player
 	float	pdy; //delta y (set when keypress)
 	float	pa; //angle (set at parsing) (PI3 = NORTH, 0 = EAST, PI2 = SOUTH, PI = WEST)
 }	t_player;
-
-typedef struct s_data
-{
-	char **map;
-	int height;
-	int width;
-	// t_player	player; //Don't know if it should be pointer or not
-	uint32_t	color_f;
-	uint32_t	color_c;
-}	t_data;
 
 typedef struct s_ray
 {
@@ -93,7 +106,26 @@ typedef struct	s_texture
 	float	lineO;
 }	t_texture;
 
-void paint_image(mlx_image_t *img, int32_t color);
-void	draw_rays_3d(t_player player, mlx_image_t *crash);
+void 		paint_image(mlx_image_t *img, int32_t color);
+void		draw_rays_3d(t_player player, mlx_image_t *crash);
 // uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y, float shade);
 uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y);
+int 		arr_create(t_arr *arr);
+int 		arr_add(t_arr *arr, char *str);
+char 		*arr_get(t_arr *arr, unsigned long index);
+void 		arr_free(t_arr *arr);
+
+// PARSER
+int			handle_input(int argc, char**argv, int *fd);
+void		init_data(t_data *data);
+int			parser(t_data *data, char **argv, int fd);
+int			check_file_type(char *argv);
+int			get_identifiers(t_data *data, int fd);
+int			get_map(t_data *data, int fd);
+int			validate_map(t_data *data);
+int			check_player(t_data *data);
+int			is_player_pos_set(t_data *data);
+
+void		free_2d(char **str, int i);
+void 		free_textures(t_data *data);
+int			str_eq(const char *s1, const char *s2);
