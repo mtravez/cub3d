@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/22 12:11:40 by christianme       #+#    #+#             */
+/*   Updated: 2023/09/22 12:12:10 by christianme      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	free_2d(char **str, int i)
@@ -8,6 +20,18 @@ void	free_2d(char **str, int i)
 		i--;
 	}
 	free(str);
+}
+
+void	free_textures(t_data *data)
+{
+	if (data->ea != NULL)
+		free(data->ea);
+	if (data->so != NULL)
+		free(data->so);
+	if (data->we != NULL)
+		free(data->we);
+	if (data->no != NULL)
+		free(data->no);
 }
 
 static int	str_cmp(const char *s1, const char *s2)

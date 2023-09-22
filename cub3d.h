@@ -125,6 +125,9 @@ int			check_file_type(char *argv);
 int			get_identifiers(t_data *data, int fd);
 int			get_map(t_data *data, int fd);
 int			validate_map(t_data *data);
+int			check_player(t_data *data);
+int			is_player_pos_set(t_data *data);
 
 void		free_2d(char **str, int i);
+void 		free_textures(t_data *data);
 int			str_eq(const char *s1, const char *s2);

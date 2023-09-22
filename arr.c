@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   arr.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/22 11:15:15 by christianme       #+#    #+#             */
+/*   Updated: 2023/09/22 11:40:01 by christianme      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include "cub3d.h"
 
 static int	arr_grow(t_arr *arr)
 {
-	char **new;
+	char	**new;
 
 	arr->max_size *= 2;
 	new = malloc(arr->max_size * sizeof(char *));
@@ -15,7 +27,7 @@ static int	arr_grow(t_arr *arr)
 	return (0);
 }
 
-int arr_create(t_arr *arr) 
+int	arr_create(t_arr *arr)
 {
 	arr->size = 0;
 	arr->max_size = 1;
@@ -23,26 +35,26 @@ int arr_create(t_arr *arr)
 	return (arr->data == NULL);
 }
 
-int arr_add(t_arr *arr, char *str)
+int	arr_add(t_arr *arr, char *str)
 {
-	if (arr->size == arr->max_size && arr_grow(arr)) 
+	if (arr->size == arr->max_size && arr_grow(arr))
 		return (1);
 	arr->data[arr->size] = str;
 	arr->size++;
 	return (0);
 }
 
-char *arr_get(t_arr *arr, unsigned long index)
+char	*arr_get(t_arr *arr, unsigned long index)
 {
 	return (arr->data[index]);
 }
 
-void arr_free(t_arr *arr)
+void	arr_free(t_arr *arr)
 {
 	unsigned long	i;
 
 	i = 0;
 	while (i < arr->size)
-		free(arr->data[i++]); 
+		free(arr->data[i++]);
 	free(arr->data);
 }
