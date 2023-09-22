@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_identifier.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:46:53 by christianme       #+#    #+#             */
-/*   Updated: 2023/09/22 11:55:20 by christianme      ###   ########.fr       */
+/*   Updated: 2023/09/22 15:09:14 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 static int	rgb_to_uint(char **frag, uint32_t *color)
 {
@@ -50,13 +50,13 @@ static int	set_color(char *str, uint32_t *color)
 static int	set_id(t_data *data, char **frag)
 {
 	if (str_eq(frag[0], "EA\0") && data->ea == NULL)
-		data->ea = ft_strdup(frag[1]);
+		data->ea = ft_substr(frag[1], 0, ft_strlen(frag[1]) - 1);
 	else if (str_eq(frag[0], "SO\0") && data->so == NULL)
-		data->so = ft_strdup(frag[1]);
+		data->so = ft_substr(frag[1], 0, ft_strlen(frag[1]) - 1);
 	else if (str_eq(frag[0], "WE\0") && data->we == NULL)
-		data->we = ft_strdup(frag[1]);
+		data->we = ft_substr(frag[1], 0, ft_strlen(frag[1]) - 1);
 	else if (str_eq(frag[0], "NO\0") && data->no == NULL)
-		data->no = ft_strdup(frag[1]);
+		data->no = ft_substr(frag[1], 0, ft_strlen(frag[1]) - 1);
 	else if (str_eq(frag[0], "F\0"))
 	{
 		if (set_color(ft_strdup(frag[1]), &data->color_f))

@@ -3,17 +3,17 @@
 # include <math.h>
 # include <stdio.h>
 # define BPP sizeof(int32_t)
-# define MAPY 10
-# define MAPX 10
-# define MAPSIZE 10
-# define MAPS 80
+# define STEPSIZE 64.0
+# define MAPS 64
+# define SPEED 8
+# define TURN_SPEED 0.1
 # define PINK 0xFAA0EFFF
 # define SHADOW 0xB876B0FF
 # define GROUND 0x0000004B
 # define WALL 0xAFFAA04B
 # define FLOOR 0x222929FF
 # define CEILING 0x070808FF
-# define PI 3.14159265359 //WEST
+# define PI M_PI //WEST
 # define PI2 PI / 2 //SOUTH
 # define PI3 3 * PI / 2 //NORTH
 # define DR 0.0174533
@@ -64,6 +64,7 @@ typedef struct s_player
 	mlx_image_t *img; //set at main
 	mlx_texture_t	*textures[4];	//set at parsing, use enum for position (only allow square textures, please)
 	t_map3d		*map3d;	//set at runtime
+	t_data	*data;
 	float	px;	//set at parsing
 	float	py;	//set at parsing
 	float	pdx; //delta x (set when keypress)
@@ -106,14 +107,15 @@ typedef struct	s_texture
 	float	lineO;
 }	t_texture;
 
-void 		paint_image(mlx_image_t *img, int32_t color);
-void		draw_rays_3d(t_player player, mlx_image_t *crash);
+void paint_image(mlx_image_t *img, int32_t color);
+void	draw_rays_3d(t_player player);
 // uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y, float shade);
 uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y);
 int 		arr_create(t_arr *arr);
 int 		arr_add(t_arr *arr, char *str);
 char 		*arr_get(t_arr *arr, unsigned long index);
 void 		arr_free(t_arr *arr);
+void		play(t_data data);
 
 // PARSER
 int			handle_input(int argc, char**argv, int *fd);

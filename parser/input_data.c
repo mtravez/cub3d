@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   input_data.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 12:00:22 by christianme       #+#    #+#             */
-/*   Updated: 2023/09/22 12:01:12 by christianme      ###   ########.fr       */
+/*   Updated: 2023/09/22 14:35:35 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
 #include <fcntl.h>
+#include "../cub3d.h"
 
 void	init_data(t_data *data)
 {

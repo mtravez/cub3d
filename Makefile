@@ -1,6 +1,6 @@
 NAME = cub3d
-SRC = main.c arr.c input_data.c parser.c get_identifier.c get_map.c validate_map.c check_player.c utils.c
-# SRC = cub3d.c raycast.c parser.c
+SRC = main.c parser/arr.c parser/input_data.c parser/parser.c parser/get_identifier.c parser/get_map.c parser/validate_map.c \
+parser/check_player.c parser/utils.c cub3d.c raycast.c
 
 CFLAGS      = -Wall -Wextra -Werror -fsanitize=address
 
@@ -21,6 +21,7 @@ all: $(NAME)
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)/parser
 
 $(NAME): $(LIBFT) $(MLX42) $(OBJ_DIR) $(OBJ)
 	@cc $(CFLAGS) $(OBJ) $(LIBFT) $(MLX42) $(GL_FLAGS) -o $(NAME)

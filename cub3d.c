@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:21:07 by mtravez           #+#    #+#             */
-/*   Updated: 2023/09/05 10:46:30 by christianme      ###   ########.fr       */
+/*   Updated: 2023/09/22 15:32:03 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-char map[10][10] = {
-	{'1','1','1','1','1','1','1','1','1','1'},
-	{'1','0','0','0','0','0','0','0','0','1'},
-	{'1','0','1','0','0','0','0','0','0','1'},
-	{'1','1','1','0','0','0','0','0','0','1'},
-	{'1','0','0','0','0','0','0','0','0','1'},
-	{'1','0','0','0','0','1','0','0','0','1'},
-	{'1','0','1','0','0','1','0','0','0','1'},
-	{'1','0','1','0','0','1','0','0','0','1'},
-	{'1','0','1','0','0','1','0','0','0','1'},
-	{'1','1','1','1','1','1','1','1','1','1'}
-};
+// char map[10][10] = {
+// 	{'1','1','1','1','1','1','1','1','1','0'},
+// 	{'1','0','0','0','0','0','0','0','0','1'},
+// 	{'1','0','1','0','0','0','0','0','0','1'},
+// 	{'1','1','1','0','0','0','0','0','0','1'},
+// 	{'1','0','0','0','0','0','0','0','0','1'},
+// 	{'1','0','0','0','0','1','0','0','0','1'},
+// 	{'1','0','1','0','0','1','0','0','0','1'},
+// 	{'1','0','1','0','0','1','0','0','0','1'},
+// 	{'1','0','1','0','0','1','0','0','0','1'},
+// 	{'1','1','1','1','1','1','1','1','1','1'}
+// };
 
 mlx_image_t *crash;
 
@@ -93,31 +93,36 @@ void paint_image(mlx_image_t *img, int32_t color)
 // 	mlx_image_to_window(mlx, player->dir, player->img->instances[0].x + player->pdx * 5, player->img->instances[0].y + player->pdy * 5 + 10);
 // }
 
-void	draw_map_2d(void *mlx)
-{
-	int x, y, x0, y0;
+// void	draw_map_2d(void *mlx)
+// {
+// 	int x, y, x0, y0;
 	
-	mlx_image_t *square1 = mlx_new_image(mlx, MAPSIZE, MAPSIZE);
-	paint_image(square1, WALL);
+// 	mlx_image_t *square1 = mlx_new_image(mlx, MAPSIZE, MAPSIZE);
+// 	paint_image(square1, WALL);
 	
-	mlx_image_t *square2 = mlx_new_image(mlx, MAPSIZE, MAPSIZE);
-	paint_image(square2, GROUND);
+// 	mlx_image_t *square2 = mlx_new_image(mlx, MAPSIZE, MAPSIZE);
+// 	paint_image(square2, GROUND);
 	
-	mlx_image_t **to_draw = &square1;
-	for (y = 0; y < MAPY; y++)
-	{
-		for (x = 0; x < MAPX; x++)
-		{
-			if (map[y][x] == '1')
-				to_draw = &square1;
-			else
-				to_draw = &square2;
-			x0 = x * MAPSIZE;
-			y0 = y * MAPSIZE;
-			mlx_image_to_window(mlx, *to_draw, x0 + x, y0 + y);
-		}
-	}
-}
+// 	mlx_image_t **to_draw = &square1;
+// 	for (y = 0; y < MAPY; y++)
+// 	{
+// 		for (x = 0; x < MAPX; x++)
+// 		{
+// 			if (map[y][x] == '1')
+// 				to_draw = &square1;
+// 			else
+// 				to_draw = &square2;
+// 			x0 = x * MAPSIZE;
+// 			y0 = y * MAPSIZE;
+// 			mlx_image_to_window(mlx, *to_draw, x0 + x, y0 + y);
+// 		}
+// 	}
+// }
+
+// void	set_vh_offset(t_player *player)
+// {
+	
+// }
 
 void buttons(mlx_key_data_t key, void *param)
 {
@@ -125,20 +130,18 @@ void buttons(mlx_key_data_t key, void *param)
 
 	if (key.key == MLX_KEY_LEFT && key.action != MLX_RELEASE)
 	{
-		player->pa -= 0.1;
+		player->pa -= TURN_SPEED;
 		if (player->pa < 0)
 			player->pa += 2 * PI;
-		player->pdx = cos(player->pa) * 7;
-		player->pdy = sin(player->pa) * 7;
 	}
 	if (key.key == MLX_KEY_RIGHT)
 	{
-		player->pa += 0.1;
+		player->pa += TURN_SPEED;
 		if (player->pa > 2 * PI)
 			player->pa -= 2 * PI;
-		player->pdx = cos(player->pa) * 7;
-		player->pdy = sin(player->pa) * 7;
 	}
+	player->pdx = cos(player->pa) * SPEED;
+	player->pdy = sin(player->pa) * SPEED;
 
 	int xo;
 	if (player->pdx < 0)
@@ -150,21 +153,21 @@ void buttons(mlx_key_data_t key, void *param)
 		yo = -20;
 	else
 		yo = 20;
-	int ipx = player->px / 64.0, ipx_add_xo = (player->px + xo) / 64.0, ipx_sub_xo = (player->px - xo) / 64.0;
-	int ipy = player->py / 64.0, ipy_add_yo = (player->py + yo) / 64.0, ipy_sub_yo = (player->py - yo) / 64.0;
+	int ipx = player->px / STEPSIZE, ipx_add_xo = (player->px + xo) / STEPSIZE, ipx_sub_xo = (player->px - xo) / STEPSIZE;
+	int ipy = player->py / STEPSIZE, ipy_add_yo = (player->py + yo) / STEPSIZE, ipy_sub_yo = (player->py - yo) / STEPSIZE;
 	
 	if (key.key == MLX_KEY_W)
 	{
-		if (map[ipy][ipx_add_xo] == '0')
+		if (player->data->map.data[ipy][ipx_add_xo] != '1')
 			player->px += player->pdx;
-		if (map[ipy_add_yo][ipx] == '0')
+		if (player->data->map.data[ipy_add_yo][ipx] != '1')
 			player->py += player->pdy;
 	}
 	if (key.key == MLX_KEY_S)
 	{
-		if (map[ipy][ipx_sub_xo] == '0')
+		if (player->data->map.data[ipy][ipx_sub_xo] != '1')
 			player->px -= player->pdx;
-		if (map[ipy_sub_yo][ipx] == '0')
+		if (player->data->map.data[ipy_sub_yo][ipx] != '1')
 			player->py -= player->pdy;
 	}
 	if ((cos(player->pa + (PI / 2)) * 5) < 0)
@@ -175,40 +178,36 @@ void buttons(mlx_key_data_t key, void *param)
 		yo = -20;
 	else
 		yo = 20;
-	ipx = player->px / 64.0, ipx_add_xo = (player->px + xo) / 64.0, ipx_sub_xo = (player->px - xo) / 64.0;
-	ipy = player->py / 64.0, ipy_add_yo = (player->py + yo) / 64.0, ipy_sub_yo = (player->py - yo) / 64.0;
+	ipx = player->px / STEPSIZE, ipx_add_xo = (player->px + xo) / STEPSIZE, ipx_sub_xo = (player->px - xo) / STEPSIZE;
+	ipy = player->py / STEPSIZE, ipy_add_yo = (player->py + yo) / STEPSIZE, ipy_sub_yo = (player->py - yo) / STEPSIZE;
 	if (key.key == MLX_KEY_D)
 	{
-		if (map[ipy][ipx_add_xo] == '0')
-			player->px += cos(player->pa + (PI / 2)) * 5;
-		if (map[ipy_add_yo][ipx] == '0')
-			player->py += sin(player->pa + (PI / 2)) * 5;
+		if (player->data->map.data[ipy][ipx_add_xo] != '1')
+			player->px += cos(player->pa + (PI / 2)) * SPEED;
+		if (player->data->map.data[ipy_add_yo][ipx] != '1')
+			player->py += sin(player->pa + (PI / 2)) * SPEED;
 	}
 	if (key.key == MLX_KEY_A)
 	{
-		if (map[ipy][ipx_sub_xo] == '0')
-			player->px -= cos(player->pa + (PI / 2)) * 5;
-		if (map[ipy_sub_yo][ipx] == '0')
-			player->py -= sin(player->pa + (PI / 2)) * 5;
+		if (player->data->map.data[ipy][ipx_sub_xo] != '1')
+			player->px -= cos(player->pa + (PI / 2)) * SPEED;
+		if (player->data->map.data[ipy_sub_yo][ipx] != '1')
+			player->py -= sin(player->pa + (PI / 2)) * SPEED;
 	}
-	// player->img->instances[0].x = player->px;
-	// player->img->instances[0].y = player->py;
-	// player->dir->instances[0].x = player->px + player->pdx * 5;
-	// player->dir->instances[0].y = player->py + player->pdy * 5;
-	draw_rays_3d(*player, crash);
+	draw_rays_3d(*player);
 }
 
-void	paint_text(t_player player)
-{
-	mlx_texture_t *t = player.textures[3];
-	mlx_image_t *img = mlx_new_image(player.mlx, t->width, t->height);
-	for (u_int32_t i = 0; i < t->height; i++)
-	{
-		for (u_int32_t j = 0; j < t->width; j++)
-			mlx_put_pixel(img, j, i, t->pixels[(i * t->width + j) * BPP]);
-	}
-	mlx_image_to_window(player.mlx, img, 0, 0);
-}
+// void	paint_text(t_player player)
+// {
+// 	mlx_texture_t *t = player.textures[3];
+// 	mlx_image_t *img = mlx_new_image(player.mlx, t->width, t->height);
+// 	for (u_int32_t i = 0; i < t->height; i++)
+// 	{
+// 		for (u_int32_t j = 0; j < t->width; j++)
+// 			mlx_put_pixel(img, j, i, t->pixels[(i * t->width + j) * BPP]);
+// 	}
+// 	mlx_image_to_window(player.mlx, img, 0, 0);
+// }
 
 void	paint_horizon(int32_t color_c, int32_t color_f, void *mlx)
 {
@@ -223,16 +222,18 @@ void	paint_horizon(int32_t color_c, int32_t color_f, void *mlx)
 	mlx_image_to_window(mlx, floor, 0, WIN_H / 2);
 }
 
-int main()
+void play(t_data data)
 {
 	mlx_t		*mlx;
 	t_player	player;
 	t_map3d		map3d;
 
 	mlx = mlx_init(WIN_W, WIN_H, "Game", true);
-	player.px = 1 * MAPS - MAPSIZE;
-	player.py = 2 * MAPS - MAPSIZE;
-	player.pa = PI3;
+	player.data = &data;
+	player.px = (data.player_x * STEPSIZE) + STEPSIZE / 2;
+	player.py = (data.player_y * STEPSIZE) + STEPSIZE / 2;
+	float direction[4] = {0, PI2, PI, PI3};
+	player.pa = direction[data.player_dir];
 	player.pdx = cos(player.pa) * 5;
 	player.pdy = sin(player.pa) * 5;
 	player.map3d = &map3d;
@@ -243,12 +244,10 @@ int main()
 	}
 	player.mlx = mlx;
 	player.img = mlx_new_image(mlx, WIN_W, WIN_H);
-	player.textures[0] = mlx_load_png("pics/pngtree.png");
-	// mlx_texture_to_image(mlx, player.textures[0]);
-	player.textures[1] = mlx_load_png("pics/greystone.png");
-	player.textures[2] = mlx_load_png("pics/mossy.png");
-	player.textures[3] = mlx_load_png("pics/colorstone.png");
-	crash = mlx_new_image(mlx, 10, 10);
+	player.textures[EAST] = mlx_load_png((const char *)data.ea);
+	player.textures[SOUTH] = mlx_load_png((const char *)data.so);
+	player.textures[WEST] = mlx_load_png((const char *)data.we);
+	player.textures[NORTH] = mlx_load_png((const char *)data.no);
 	// draw_map_2d(mlx);
 	// draw_player(mlx, &player);
 	// for (int i = 0; i < RAYNR; i++)
@@ -257,12 +256,10 @@ int main()
 	// paint_text(player);
 	// paint_image(player.img, 0xFF0000FF);
 	mlx_image_to_window(mlx, player.img, 0, 0);
-	draw_rays_3d(player, crash);
+	draw_rays_3d(player);
 	mlx_key_hook(mlx, &buttons, &player);
 	mlx_loop(mlx);
-	mlx_delete_image(mlx, crash);
 	mlx_delete_image(mlx, player.img);
 	mlx_terminate(mlx);
 	// system("leaks cub3d");
-	return (0);
 }

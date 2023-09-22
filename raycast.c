@@ -1,17 +1,17 @@
 #include "cub3d.h"
 
-static char map[10][10] = {
-	{'1','1','1','1','1','1','1','1','1','1'},
-	{'1','0','0','0','0','0','0','0','0','1'},
-	{'1','0','1','0','0','0','0','0','0','1'},
-	{'1','1','1','0','0','0','0','0','0','1'},
-	{'1','0','0','0','0','0','0','0','0','1'},
-	{'1','0','0','0','0','1','0','0','0','1'},
-	{'1','0','1','0','0','1','0','0','0','1'},
-	{'1','0','1','0','0','1','0','0','0','1'},
-	{'1','0','1','0','0','1','0','0','0','1'},
-	{'1','1','1','1','1','1','1','1','1','1'}
-};
+// static char map[10][10] = {
+// 	{'1','1','1','1','1','1','1','1','1','1'},
+// 	{'1','0','0','0','0','0','0','0','0','1'},
+// 	{'1','0','1','0','0','0','0','0','0','1'},
+// 	{'1','1','1','0','0','0','0','0','0','1'},
+// 	{'1','0','0','0','0','0','0','0','0','1'},
+// 	{'1','0','0','0','0','1','0','0','0','1'},
+// 	{'1','0','1','0','0','1','0','0','0','1'},
+// 	{'1','0','1','0','0','1','0','0','0','1'},
+// 	{'1','0','1','0','0','1','0','0','0','1'},
+// 	{'1','1','1','1','1','1','1','1','1','1'}
+// };
 
 float	dist(float ax, float ay, float bx, float by, float ang)
 {
@@ -81,28 +81,32 @@ uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y)
 
 void	set_tex_values(t_ray ray, t_player player, t_texture *t)
 {
-	t->lineH = (WIN_H * MAPS) / ray.dist;
+	t->lineH = (WIN_H * STEPSIZE) / ray.dist;
 	t->t = player.textures[ray.wall];
 	t->ty_step = 1.0 * t->t->height / t->lineH;
 	t->ty_off = 0;
 	if (t->lineH > WIN_H)
 	{
 		t->ty_off = (t->lineH - WIN_H) / 2.0;
+		// int drawStart = (-t->lineH / 2 + WIN_H / 2);
+		// if (drawStart < 0) drawStart = 0;
+		// t->ty_off = (drawStart - WIN_H / 2 + t->lineH / 2) * t->ty_step;
 		t->lineH = WIN_H;
 	}
 	t->lineO = (WIN_H / 2) - (t->lineH / 2);
 	t->ty = t->ty_off * t->ty_step;
+	// t->ty = (int) t->ty_off & (t->t->height - 1);
 	if (ray.disV > ray.disH)
 	{
-		t->tx = (int)(ray.rx * (t->t->width / 64)) % t->t->width;
+		t->tx = (int)(ray.rx * (t->t->width / STEPSIZE)) % t->t->width;
 		if (ray.ra > PI)
-			t->tx = t->t->width - 1 - t->tx;
+			t->tx = t->t->width - t->tx - 1;
 	}
 	else
 	{
-		t->tx = (int) (ray.ry  * (t->t->width / 64)) % t->t->height;
+		t->tx = (int) (ray.ry  * (t->t->width / STEPSIZE)) % t->t->width;
 		if (ray.ra > PI2 && ray.ra < PI3)
-			t->tx = t->t->height - 1 - t->tx;
+			t->tx = t->t->width - t->tx - 1;
 	}
 }
 
@@ -115,6 +119,7 @@ void	draw_texture(t_ray ray, t_player player, int32_t color)
 	i = 0;
 	while (i < t.lineH)
 	{
+		// t.ty = (int)t.ty_off & (t.t->height - 1);
 		color = get_texcolor(t.t, (int) t.tx, (int)t.ty);
 		player.map3d->buffer[(int)(i + t.lineO)][ray.r] = color;
 		t.ty += t.ty_step;
@@ -124,9 +129,9 @@ void	draw_texture(t_ray ray, t_player player, int32_t color)
 	while (i < WIN_H)
 	{
 		if (i <= t.lineO)
-			color = CEILING;
+			color = player.data->color_c;
 		if (i >= t.lineH + t.lineO)
-			color = FLOOR;
+			color = player.data->color_f;
 		if (i < t.lineO || i > t.lineH + t.lineO)
 			player.map3d->buffer[i][ray.r] = color;
 		i++;
@@ -139,16 +144,14 @@ void	start_ray(t_ray *ray, t_player player)
 	ray->disH = 10000000;
 	ray->hx = player.px;
 	ray->hy = player.py;
-	// ray->dof = 0;
 	ray->disV = 10000000;
 	ray->vx = player.px;
 	ray->vy = player.py;
 }
 
-void	draw_rays_3d(t_player player, mlx_image_t *crash)
+void	draw_rays_3d(t_player player)
 {
 	t_ray	ray;
-	// float	aTan;
 	float	nTan;
 	float	ca;
 	int32_t	color;
@@ -165,24 +168,23 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 	{
 		//---HORIZONTAL WALLS---
 		start_ray(&ray, player);
-		// aTan = -1 / tan(ray.ra);
 		if (ray.ra > PI)
 		{
 			ray.ry = (((int) player.py >> 6) << 6) - 0.0001;
-			ray.yo = -64;
+			ray.yo = -STEPSIZE;
 		}
 		if (ray.ra <= PI)
 		{
-			ray.ry = (((int) player.py >> 6) << 6) + 64;
-			ray.yo = 64;
+			ray.ry = (((int) player.py >> 6) << 6) + STEPSIZE;
+			ray.yo = STEPSIZE;
 		}
 		ray.rx = (player.py - ray.ry) * (-1 / tan(ray.ra)) + player.px;
 		ray.xo = -ray.yo * (-1 / tan(ray.ra));
-		while (ray.dof < 8)
+		while (ray.dof < 20)
 		{
 			ray.mx = (int) (ray.rx) >> 6;
 			ray.my = (int) (ray.ry) >> 6;
-			if (ray.mx >= 0 && ray.my >= 0 && ray.mx < MAPX && ray.my < MAPY && map[ray.my][ray.mx] == '1')
+			if (ray.mx >= 0 && ray.my >= 0 && (size_t)ray.mx < player.data->width && (size_t) ray.my < player.data->height && player.data->map.data[ray.my][ray.mx] == '1')
 			{
 				ray.hx = ray.rx;
 				ray.hy = ray.ry;
@@ -200,20 +202,20 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 		if (ray.ra > PI2 && ray.ra < PI3)
 		{
 			ray.rx = (((int) player.px >> 6) << 6) - 0.0001;
-			ray.xo = -64;
+			ray.xo = -STEPSIZE;
 		}
 		if (ray.ra < PI2 || ray.ra > PI3)
 		{
-			ray.rx = (((int) player.px >> 6) << 6) + 64;
-			ray.xo = 64;
+			ray.rx = (((int) player.px >> 6) << 6) + STEPSIZE;
+			ray.xo = STEPSIZE;
 		}
-		ray.ry = (player.px - ray.rx) * nTan + player.py;
-		ray.yo = -ray.xo * nTan;
-		while (ray.dof < 8)
+		ray.ry = (player.px - ray.rx) * -tan(ray.ra) + player.py;
+		ray.yo = -ray.xo * -tan(ray.ra);
+		while (ray.dof < 20)
 		{
 			ray.mx = (int) (ray.rx) >> 6;
 			ray.my = (int) (ray.ry) >> 6;
-			if (ray.mx >= 0 && ray.my >= 0 && ray.mx < MAPX && ray.my < MAPY && map[ray.my][ray.mx] == '1')
+			if (ray.mx >= 0 && ray.my >= 0 && (size_t) ray.mx < player.data->width && (size_t) ray.my < player.data->height && player.data->map.data[ray.my][ray.mx] == '1')
 			{
 				ray.vx = ray.rx;
 				ray.vy = ray.ry;
@@ -253,7 +255,7 @@ void	draw_rays_3d(t_player player, mlx_image_t *crash)
 			ray.ra += 2 * PI;
 		if (ray.ra > 2 * PI)
 			ray.ra -= 2 * PI;
-		paint_image(crash, 0xFF0000FF);
+		// paint_image(crash, 0xFF0000FF);
 		
 		//---DRAW 3D WALLS---
 		ca = player.pa - ray.ra;

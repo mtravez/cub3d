@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   arr.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:15:15 by christianme       #+#    #+#             */
-/*   Updated: 2023/09/22 11:40:01 by christianme      ###   ########.fr       */
+/*   Updated: 2023/09/22 14:33:39 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "cub3d.h"
+#include "../cub3d.h"
 
 static int	arr_grow(t_arr *arr)
 {

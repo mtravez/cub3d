@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_player.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:41:06 by christianme       #+#    #+#             */
-/*   Updated: 2023/09/22 11:46:33 by christianme      ###   ########.fr       */
+/*   Updated: 2023/09/22 14:33:42 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 static int	player_position(t_data *data, size_t y, size_t x)
 {

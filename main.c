@@ -12,6 +12,7 @@ int	main (int argc, char **argv)
 		return (close(fd), 1);	
 	// if (RAYCASTER())
 	// 	return (1);	
+	play(data);
 	free_textures(&data);
 	free_2d(data.map.data, data.map.size);
 	return (printf("Success\n"), 0);
