@@ -1,6 +1,6 @@
 NAME = cub3d
 SRC = main.c parser/arr.c parser/input_data.c parser/parser.c parser/get_identifier.c parser/get_map.c parser/validate_map.c \
-parser/check_player.c parser/utils.c cub3d.c raycast.c
+parser/check_player.c parser/utils.c cub3d.c raycast.c math_utils.c raycast_utils.c drawing_rays.c
 
 CFLAGS      = -Wall -Wextra -Werror -fsanitize=address
 
@@ -24,7 +24,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/parser
 
 $(NAME): $(LIBFT) $(MLX42) $(OBJ_DIR) $(OBJ)
-	@cc $(CFLAGS) $(OBJ) $(LIBFT) $(MLX42) $(GL_FLAGS) -o $(NAME)
+	@cc $(CFLAGS) $(OBJ) $(LIBFT) $(MLX42) $(GL_FLAGS) $(SAN_LDFLAGS) -o $(NAME)
 	@printf "$(PINK)[Cub3d] Compiled successfuly!!! :D $(RESET)\n"
 
 $(LIBFT):

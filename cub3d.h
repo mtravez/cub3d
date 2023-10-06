@@ -1,8 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/06 18:10:49 by mtravez           #+#    #+#             */
+/*   Updated: 2023/10/06 18:23:16 by mtravez          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef CUB3D_H
+# define CUB3D_H
+
 # include "lib/MLX42/include/MLX42/MLX42.h"
 # include "lib/libft/libft.h"
 # include <math.h>
 # include <stdio.h>
-# define BPP sizeof(int32_t)
+# define BPP 4UL
 # define STEPSIZE 64.0
 # define MAPS 64
 # define SPEED 8
@@ -14,12 +29,14 @@
 # define FLOOR 0x222929FF
 # define CEILING 0x070808FF
 # define PI M_PI //WEST
-# define PI2 PI / 2 //SOUTH
-# define PI3 3 * PI / 2 //NORTH
+# define PI2 M_PI_2 //SOUTH
+# define PI3 4.71238898 //NORTH
 # define DR 0.0174533
 # define WIN_H 750
 # define WIN_W 1024
 # define RAYNR WIN_W
+# define VERTICAL 1
+# define HORIZONTAL 0
 
 typedef enum e_direction
 {
@@ -38,12 +55,12 @@ typedef struct s_arr
 
 typedef struct s_data
 {
-	t_arr 		map;
-	size_t		width;			//starting from 1
-	size_t		height;			//starting from 1
+	t_arr		map;
+	size_t		width;
+	size_t		height;
 	t_direction	player_dir;
-	size_t		player_x;		//arr_index
-	size_t		player_y;		//arr_index
+	size_t		player_x;
+	size_t		player_y;
 	char		*ea;
 	char		*so;
 	char		*we;
@@ -54,68 +71,73 @@ typedef struct s_data
 
 typedef struct s_map3d
 {
-	// mlx_image_t *map_3d[RAYNR];
 	uint32_t	**buffer;
 }	t_map3d;
 
 typedef struct s_player
 {
-	mlx_t		*mlx; //set at parsing for the textures
-	mlx_image_t *img; //set at main
-	mlx_texture_t	*textures[4];	//set at parsing, use enum for position (only allow square textures, please)
-	t_map3d		*map3d;	//set at runtime
-	t_data	*data;
-	float	px;	//set at parsing
-	float	py;	//set at parsing
-	float	pdx; //delta x (set when keypress)
-	float	pdy; //delta y (set when keypress)
-	float	pa; //angle (set at parsing) (PI3 = NORTH, 0 = EAST, PI2 = SOUTH, PI = WEST)
+	mlx_t			*mlx;
+	mlx_image_t		*img;
+	mlx_texture_t	*textures[4];
+	t_map3d			*map3d;
+	t_data			*data;
+	float			px;
+	float			py;
+	float			pdx;
+	float			pdy;
+	float			pa;
 }	t_player;
 
 typedef struct s_ray
 {
-	int		r;
-	int		mx;
-	int		my;
-	int		mp;
-	int		dof;
-	float	rx;
-	float	ry;
-	float	ra;
-	float	xo;
-	float	yo;
-	float	dist;
-	
-	float	disH;
-	float	disV;
-	float	hx;
-	float	hy;
-	float	vx;
-	float	vy;
-	t_direction wall;
-	float	shade;
+	int			r;
+	int			mx;
+	int			my;
+	int			mp;
+	float		rx;
+	float		ry;
+	float		ra;
+	float		xo;
+	float		yo;
+	float		dist;
+	float		dis_d[2];
+	float		dx[2];
+	float		dy[2];
+	t_direction	wall;
+	float		shade;
 }	t_ray;
 
-typedef struct	s_texture
+typedef struct s_texture
 {
 	mlx_texture_t	*t;
-	float	tx;
-	float	ty;
-	float	ty_off;
-	float	ty_step;
-	int		lineH;
-	float	lineO;
+	float			tx;
+	float			ty;
+	float			ty_off;
+	float			ty_step;
+	int				line_h;
+	float			line_o;
 }	t_texture;
 
-void paint_image(mlx_image_t *img, int32_t color);
-void	draw_rays_3d(t_player player);
-// uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y, float shade);
-uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y);
-int 		arr_create(t_arr *arr);
-int 		arr_add(t_arr *arr, char *str);
-char 		*arr_get(t_arr *arr, unsigned long index);
-void 		arr_free(t_arr *arr);
+void		draw_rays_3d(t_player player);
+float		get_angle(t_direction dir);
+int			get_simbol(float x);
+void		free_map(t_map3d *map);
+void		delete_textures(t_player *player);
+int			arr_create(t_arr *arr);
+int			arr_add(t_arr *arr, char *str);
+char		*arr_get(t_arr *arr, unsigned long index);
+void		arr_free(t_arr *arr);
 void		play(t_data data);
+void		clear_buffer(t_map3d *map);
+void		paint_buffer(t_player player);
+uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y, float shade);
+void		set_tex_values(t_ray ray, t_player player, t_texture *t);
+float		dist(float ax, float ay, float bx, float by);
+void		draw_texture(t_ray ray, t_player player);
+void		start_ray(t_ray *ray, t_player player);
+void		calculate_ray_dist(t_ray *ray, t_player player, int vh);
+void		compare_distance(t_ray *ray);
+float		round_up_angle(float angle);
 
 // PARSER
 int			handle_input(int argc, char**argv, int *fd);
@@ -129,5 +151,7 @@ int			check_player(t_data *data);
 int			is_player_pos_set(t_data *data);
 
 void		free_2d(char **str, int i);
-void 		free_textures(t_data *data);
+void		free_textures(t_data *data);
 int			str_eq(const char *s1, const char *s2);
+
+#endif
