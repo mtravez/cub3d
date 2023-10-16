@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:10:49 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/06 18:23:16 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/16 15:40:05 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@ int			parser(t_data *data, char **argv, int fd);
 int			check_file_type(char *argv);
 int			get_identifiers(t_data *data, int fd);
 int			get_map(t_data *data, int fd);
+int			set_textures(t_data *data, char **frag);
+int			set_color(char *str, uint32_t *color);
 int			validate_map(t_data *data);
 int			check_player(t_data *data);
 int			is_player_pos_set(t_data *data);
