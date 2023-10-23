@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 14:12:15 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/23 16:31:02 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/10/23 17:08:23 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		ft_print_ptr(unsigned long long point);
 
 // get_next_line
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 3
 # endif
 
 char	*get_next_line(int fd);

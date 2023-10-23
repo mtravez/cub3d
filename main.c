@@ -10,12 +10,6 @@ int	main(int argc, char **argv)
 	init_data(&data);
 	if (parser(&data, argv, fd))
 		return (close(fd), 1);
-	size_t i = 0;
-	while (i < data.map.size)
-	{
-		printf("m: %s\n", data.map.data[i]);
-		i++;
-	}
 	// if (RAYCASTER())
 	// 	return (1);
 	play(data);
