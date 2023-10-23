@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 12:11:40 by christianme       #+#    #+#             */
-/*   Updated: 2023/09/22 14:34:03 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/23 20:49:59 by christianme      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+void	free_gnl(void)
+{
+	char	*clear;
+
+	clear = get_next_line(-1);
+	free(clear);
+
+}
 
 void	free_2d(char **str, int i)
 {
