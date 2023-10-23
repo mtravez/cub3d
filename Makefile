@@ -1,7 +1,8 @@
 NAME = cub3d
 SRC = main.c parser/arr.c parser/input_data.c parser/parser.c parser/get_identifier.c parser/get_map.c parser/validate_map.c \
-parser/check_player.c parser/utils.c cub3d.c raycast.c math_utils.c raycast_utils.c drawing_rays.c
+parser/check_player.c parser/set_color.c parser/set_textures.c parser/utils.c cub3d.c raycast.c math_utils.c raycast_utils.c drawing_rays.c
 
+# CFLAGS      = -Wall -Wextra -Werror
 CFLAGS      = -Wall -Wextra -Werror -fsanitize=address
 
 SAN_LDFLAGS = -L../LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ../LeakSanitize
@@ -29,11 +30,11 @@ $(NAME): $(LIBFT) $(MLX42) $(OBJ_DIR) $(OBJ)
 
 $(LIBFT):
 	@make -C ./lib/libft
-	
+
 $(MLX42):
 	@make -C ./lib/MLX42
 
-$(OBJ_DIR)/%.o: %.c 
+$(OBJ_DIR)/%.o: %.c
 	@cc $(CFLAGS) -c $< -o $@
 
 clean:
@@ -45,6 +46,6 @@ fclean: clean
 	@make fclean -C lib/libft
 	@make fclean -C lib/MLX42
 
-re: fclean all 
+re: fclean all
 
 .PHONY: all clean fclean re
