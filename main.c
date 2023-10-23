@@ -9,7 +9,7 @@ int	main(int argc, char **argv)
 		return (1);
 	init_data(&data);
 	if (parser(&data, argv, fd))
-		return (close(fd), 1);
+		return (close(fd), free_gnl(), 1);
 	// if (RAYCASTER())
 	// 	return (1);
 	play(data);
