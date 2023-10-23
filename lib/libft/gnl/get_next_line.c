@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 18:25:26 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/17 12:11:04 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/23 18:53:39 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,16 @@ static char	*loop_read(char **file, int fd)
 	{
 		line = ft_strjoin_gnl(line, get_line(temp, &temp));
 		size = read(fd, temp, BUFFER_SIZE);
-		if (size <= 0)
+		if (!size)
 		{
 			free_null(file);
 			return (line);
+		}
+		else if (size < 0)
+		{
+			free_null(file);
+			free(line);
+			return (NULL);
 		}
 		temp[size] = '\0';
 	}

@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:51:31 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/17 17:54:07 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/23 18:55:02 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	ft_printf(const char *string, ...)
 			index++;
 		}
 		else
-		count += ft_putchar(string[index]);
+			count += ft_putchar(string[index]);
 		index++;
 	}
 	va_end(ap);

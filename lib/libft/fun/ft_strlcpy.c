@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 11:52:39 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/17 12:09:55 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/23 18:55:35 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 		j++;
 	}
 	if (dstsize != 0)
-	{	
+	{
 		while ((i < dstsize - 1) && (src[i] != '\0'))
 		{
 			dst[i] = src[i];
