@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:21:07 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/01 18:14:31 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/23 13:31:07 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,9 @@ void	set_player(t_data *data, t_player *player)
 	player->pa = get_angle(data->player_dir);
 	player->pdx = cos(player->pa) * 5;
 	player->pdy = sin(player->pa) * 5;
+	if (!check_textures(player, data))
+		return ;
 	player->img = mlx_new_image(player->mlx, WIN_W, WIN_H);
-	player->textures[EAST] = mlx_load_png((const char *)data->ea);
-	player->textures[SOUTH] = mlx_load_png((const char *)data->so);
-	player->textures[WEST] = mlx_load_png((const char *)data->we);
-	player->textures[NORTH] = mlx_load_png((const char *)data->no);
 	player->map3d->buffer = ft_calloc(WIN_H, sizeof(uint32_t *));
 	i = -1;
 	while (++i < WIN_H)
@@ -105,6 +103,11 @@ void	play(t_data data)
 	player.mlx = mlx;
 	player.map3d = &map3d;
 	set_player(&data, &player);
+	if (!player.textures[0])
+	{
+		mlx_terminate(mlx);
+		return ;
+	}
 	mlx_image_to_window(mlx, player.img, 0, 0);
 	draw_rays_3d(player);
 	mlx_key_hook(mlx, &buttons, &player);

@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:10:49 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/06 18:23:16 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/23 13:22:15 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ void		start_ray(t_ray *ray, t_player player);
 void		calculate_ray_dist(t_ray *ray, t_player player, int vh);
 void		compare_distance(t_ray *ray);
 float		round_up_angle(float angle);
+int			check_textures(t_player *player, t_data *data);
 
 // PARSER
 int			handle_input(int argc, char**argv, int *fd);
