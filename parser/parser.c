@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 12:01:37 by christianme       #+#    #+#             */
-/*   Updated: 2023/09/22 14:33:58 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/23 13:23:23 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ int	parser(t_data *data, char **argv, int fd)
 		return (free_textures(data),
 			printf("Error\nFetching Identificators failed\n"), 1);
 	if (get_map(data, fd))
-		return (free_textures(data),
-			arr_free(&data->map), printf("Error\nFetching map failed\n"), 1);
+		return (free_textures(data), printf("Error\nFetching map failed\n"), 1);
 	if (validate_map(data))
 		return (free_textures(data),
 			arr_free(&data->map), printf("Error\nInvalid map\n"), 1);

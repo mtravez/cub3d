@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:46:53 by christianme       #+#    #+#             */
-/*   Updated: 2023/10/16 17:27:37 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/10/23 16:43:15 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static int	set_id(t_data *data, char **frag)
 	}
 	else
 		return (1);
-		// return (free_2d(frag, i), 1);
 	return (0);
 }
 
