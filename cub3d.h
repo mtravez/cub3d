@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:10:49 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/23 20:50:38 by christianme      ###   ########.fr       */
+/*   Updated: 2023/10/25 12:04:54 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,6 @@ int			validate_map(t_data *data);
 int			check_player(t_data *data);
 int			is_player_pos_set(t_data *data);
 
-void		free_gnl(void);
 void		free_2d(char **str, int i);
 void		free_textures(t_data *data);
 int			str_eq(const char *s1, const char *s2);
