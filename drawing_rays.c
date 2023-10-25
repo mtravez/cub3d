@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:00:37 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/06 18:24:16 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/25 17:42:21 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ void	compare_distance(t_ray *ray)
 		ray->dist = ray->dis_d[HORIZONTAL];
 		ray->shade = 0.8;
 		if (ray->yo < 0)
-			ray->wall = SOUTH;
-		else
 			ray->wall = NORTH;
+		else
+			ray->wall = SOUTH;
 	}
 	else
 	{

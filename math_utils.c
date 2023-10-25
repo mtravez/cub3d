@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 18:04:11 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/23 13:29:42 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/25 17:39:34 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ int	check_textures(t_player *player, t_data *data)
 float	get_angle(t_direction dir)
 {
 	if (dir == EAST)
-		return (PI);
+		return (0);
 	if (dir == SOUTH)
 		return (PI2);
 	if (dir == WEST)
-		return (0);
+		return (PI);
 	return (PI3);
 }
 
