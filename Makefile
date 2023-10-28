@@ -1,6 +1,7 @@
 NAME = cub3d
 SRC = main.c parser/arr.c parser/input_data.c parser/parser.c parser/get_identifier.c parser/get_map.c parser/validate_map.c \
-parser/check_player.c parser/set_color.c parser/set_textures.c parser/utils.c cub3d.c raycast.c math_utils.c raycast_utils.c drawing_rays.c
+parser/check_player.c parser/set_color.c parser/set_textures.c parser/utils.c raycaster/cub3d.c raycaster/raycast.c \
+raycaster/math_utils.c raycaster/raycast_utils.c raycaster/drawing_rays.c
 
 # CFLAGS      = -Wall -Wextra -Werror
 CFLAGS      = -Wall -Wextra -Werror -fsanitize=address
@@ -23,6 +24,7 @@ all: $(NAME)
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)/parser
+	@mkdir -p $(OBJ_DIR)/raycaster
 
 $(NAME): $(LIBFT) $(MLX42) $(OBJ_DIR) $(OBJ)
 	@cc $(CFLAGS) $(OBJ) $(LIBFT) $(MLX42) $(GL_FLAGS) $(SAN_LDFLAGS) -o $(NAME)

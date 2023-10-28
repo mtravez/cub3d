@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:21:07 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/28 14:29:41 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/28 15:54:49 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 void	handle_angle_change(mlx_key_data_t key, t_player *player)
 {

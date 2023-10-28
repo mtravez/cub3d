@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   drawing_rays.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:00:37 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/25 17:42:21 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/28 15:54:54 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 void	draw_texture(t_ray ray, t_player player)
 {

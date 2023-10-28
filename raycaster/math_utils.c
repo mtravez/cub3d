@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   math_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 18:04:11 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/25 17:39:34 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/28 15:55:04 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 int	check_textures(t_player *player, t_data *data)
 {

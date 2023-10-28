@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:50:47 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/06 18:22:14 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/28 15:55:09 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 float	dist(float ax, float ay, float bx, float by)
 {

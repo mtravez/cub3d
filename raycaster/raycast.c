@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:08:15 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/06 18:09:23 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/28 15:55:12 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 void	set_horizontal_walls(t_player player, t_ray *ray)
 {
