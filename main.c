@@ -12,10 +12,10 @@ int	main(int argc, char **argv)
 		return (close(fd), get_next_line(fd), 1);
 	// if (RAYCASTER())
 	// 	return (1);
-	play(data);
+	if (play(data))
+		return (free_textures(&data), free_2d(data.map.data, data.map.size), 1);
 	free_textures(&data);
 	free_2d(data.map.data, data.map.size);
-	return (printf("Success\n"), 0);
 }
 
 // TESTS

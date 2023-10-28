@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:10:49 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/25 17:37:38 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/28 14:29:26 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int			arr_create(t_arr *arr);
 int			arr_add(t_arr *arr, char *str);
 char		*arr_get(t_arr *arr, unsigned long index);
 void		arr_free(t_arr *arr);
-void		play(t_data data);
+int			play(t_data data);
 void		clear_buffer(t_map3d *map);
 void		paint_buffer(t_player player);
 uint32_t	get_texcolor(mlx_texture_t *t, uint32_t x, uint32_t y, float shade);

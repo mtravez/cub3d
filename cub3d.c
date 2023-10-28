@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:21:07 by mtravez           #+#    #+#             */
-/*   Updated: 2023/10/23 13:31:07 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/10/28 14:29:41 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	set_player(t_data *data, t_player *player)
 		player->map3d->buffer[i] = ft_calloc(WIN_W, sizeof(uint32_t));
 }
 
-void	play(t_data data)
+int	play(t_data data)
 {
 	mlx_t		*mlx;
 	t_player	player;
@@ -106,7 +106,7 @@ void	play(t_data data)
 	if (!player.textures[0])
 	{
 		mlx_terminate(mlx);
-		return ;
+		return (1);
 	}
 	mlx_image_to_window(mlx, player.img, 0, 0);
 	draw_rays_3d(player);
@@ -116,4 +116,5 @@ void	play(t_data data)
 	delete_textures(&player);
 	free_map(&map3d);
 	mlx_terminate(mlx);
+	return (0);
 }
