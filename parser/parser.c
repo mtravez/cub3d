@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 12:01:37 by christianme       #+#    #+#             */
-/*   Updated: 2023/10/23 13:23:23 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/10/28 19:13:29 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ int	check_file_type(char *argv)
 
 	i = 0;
 	typ = ".cub";
-	while (argv[i] != '.')
-		i++;
-	while (argv[i] != '\0')
-		if (argv[i++] != *typ++)
-			return (1);
+	// while (argv[i] != '.')
+	// 	i++;
+	// while (argv[i] != '\0')
+	// 	if (argv[i++] != *typ++)
+	// 		return (1);
+	if (ft_strrchr(argv, '.') && ft_strncmp(ft_strrchr(argv, '.'), typ, ft_strlen(typ) + 1))
+		return (1);
 	return (0);
 }
 
